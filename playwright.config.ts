@@ -27,11 +27,19 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4173',
   },
-  webServer: {
-    command: 'npm run build && npm run preview -- --port 4173 --strictPort',
-    url: 'http://localhost:4173',
-    reuseExistingServer: false,
-  },
+  webServer: [
+    {
+      command: 'npm run build && npm run preview -- --port 4173 --strictPort',
+      url: 'http://localhost:4173',
+      reuseExistingServer: false,
+    },
+    {
+      // Dev server for test-only harness pages (tests/e2e/harness/), which the build excludes.
+      command: 'npx vite --port 5180 --strictPort',
+      url: 'http://localhost:5180/tests/e2e/harness/motion.html',
+      reuseExistingServer: false,
+    },
+  ],
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: firefoxUse },

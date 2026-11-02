@@ -21,5 +21,6 @@
     "tests/e2e",
     "tests/a11y",
     "tests/visual"
-  ]
+  ],
+  "exclude": ["tests/e2e/harness"]
 }
