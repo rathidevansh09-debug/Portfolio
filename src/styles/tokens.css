@@ -1,0 +1,319 @@
+/*
+ * Design tokens — the single source for colour, type, spacing and layout values (DESIGN §3–§6;
+ * ARCHITECTURE §5). Components use these names only, never raw values.
+ * Breakpoints are desktop-first (src/styles/breakpoints.md): LG is the default; overrides follow
+ * for MD ≤ 1100, SM ≤ 800, XS ≤ 600, XXS ≤ 370. XL (≥ 1600) has no token overrides.
+ * Font sizes are rem (px ÷ 16; the root font size is never changed — DESIGN §5.3). Layout geometry
+ * stays in px / % / vw (DESIGN §5.3 rule 6).
+ * Motion tokens live in src/motion/tokens.ts (Phase 6), not here.
+ */
+
+:root {
+  /* ── Colour: core neutrals (DESIGN §4.2) ───────────────────────────────────────────── */
+  --bg: #090909;
+  --panel: #101010;
+  --surface-card: #0e1212;
+  --surface-media: #101414;
+  --surface-fallback: #0e1415;
+  --surface-sunken: #050505;
+  --surface-input: #111111;
+  --surface-menu: #0a0e0f;
+  --ink: #f2efeb;
+  --ink-soft: #b9b5b2;
+  --ink-tag: #c2bdb9;
+  --ink-tag-light: #dddddd;
+  --muted: #a09c9a;
+  --placeholder: #808e8f;
+  --divider-light: #eaf3f5;
+
+  /* ── Colour: lines and borders, all 1 px unless stated (DESIGN §4.3) ──────────────── */
+  --line: #202627;
+  --line-tag: #242c2d;
+  --line-input: #1e2d2f;
+  --line-strong: #273f43;
+  --line-dialog: #253d40;
+  --line-row: #213e42;
+  --track: #192c2e;
+  --line-reel: #272a2b; /* showreel frame, 3 px */
+  --frame-inner: rgb(255 255 255 / 0.07);
+
+  /* ── Colour: accent family (DESIGN §4.4; buttons CONFIRMED PRD D-06) ──────────────── */
+  --accent: #00d5e8;
+  --accent-fill: #00d5e8;
+  --accent-fill-hover: #00c1d2;
+  --on-accent: #090909;
+  --accent-hero-word: #00737e; /* [TO VERIFY] on screen (DESIGN §9.5) */
+  --accent-deep: #00646e; /* spare, currently unassigned */
+  --accent-border: #00575f;
+  --accent-border-soft: #00454c;
+  --accent-ring-hover: #00383d;
+  --accent-menu-line: #004047;
+  --accent-tint-bg: #031d20;
+  --icon-hover-bg: #1c2425;
+  --laurel: #006973;
+  --handle-ring: #8ed7e1;
+
+  /* ── Colour: quote card (DESIGN §4.5) ──────────────────────────────────────────────── */
+  --quote-grad-start: #00545d;
+  --quote-grad-end: #00272b;
+  --quote-border: #006b75;
+  --quote-stripe: rgb(0 213 232 / 0.17); /* accent at 17 % */
+  --quote-mark: #00d5e8;
+  --quote-symbol: #00d5e8;
+  --quote-emphasis: #96e7f2;
+
+  /* ── Colour: section backgrounds and overlays (DESIGN §4.6) ───────────────────────── */
+  --grad-impact: linear-gradient(120deg, #041517, #09090a 50%);
+  --grad-contact: linear-gradient(110deg, #080c0d, var(--bg) 60%);
+  --bg-breakdown: #090b0b;
+  --header-bg: rgb(9 9 9 / 0.96); /* bg at 96 % */
+  --backdrop: rgb(0 0 0 / 0.93); /* black at 93 % */
+  --chip-bg: rgb(9 9 9 / 0.7); /* project type tag: bg at 70 % */
+  --chip-bg-label: rgb(9 9 9 / 0.73); /* comparison labels: bg at 73 % */
+  --hover-circle-bg: rgb(9 9 9 / 0.85);
+  --hover-circle-ring: rgb(255 255 255 / 0.4);
+  /* Fades the giant hero word upward into the page; applied at --hero-word-fade-strength. */
+  --hero-word-fade: linear-gradient(0deg, var(--bg), transparent 90%);
+  --hero-word-fade-strength: 0.85;
+  /* Behind the hero bottom strip: bg (bottom) → bg at 53 % (top). Phase 9: compare with the
+     reference, which also has a solid bg stop at 60 % (not in DESIGN). */
+  --hero-bottom-fade: linear-gradient(0deg, var(--bg), rgb(9 9 9 / 0.53));
+  /* Behind hero stats so they stay readable over the portrait (left → right). */
+  --stats-veil: linear-gradient(90deg, rgb(9 9 9 / 0.72), rgb(9 9 9 / 0.91));
+  /* Film grain: own fractal-noise texture, white at 3.5 % (applied in base.css). */
+  --grain-opacity: 0.035;
+
+  /* ── Type families (DESIGN §5.1) ────────────────────────────────────────────────────── */
+  --font-display: 'Anton', Impact, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-hand: 'Caveat', cursive;
+  --leading-body: 1.7; /* paragraph line-height */
+  --leading-display: 1.02; /* display line-height */
+
+  /* ── Text tokens: Manrope / Caveat (DESIGN §5.4) — LG values ──────────────────────── */
+  --body-size: 1rem; /* 16 */
+  --body-weight: 400;
+  --body-soft-leading: 1.75;
+  --body-soft-measure: 66ch;
+
+  --title-md-size: 1.25rem; /* 20 */
+  --title-md-weight: 500;
+  --title-md-tracking: -0.035em;
+
+  --title-sm-size: 1rem; /* 16 */
+  --title-sm-weight: 600;
+  --title-sm-weight-strong: 700; /* DESIGN: 600–700 */
+
+  --card-title-size: 1rem; /* 16 */
+  --card-title-size-featured: 1rem; /* first card; differs only at XS */
+  --card-title-weight: 700;
+
+  --panel-heading-size: 1.25rem; /* 20 */
+  --panel-heading-weight: 600;
+  --panel-heading-tracking: -0.035em;
+
+  /*
+   * Fluid text tokens. DESIGN §5.4 gives only the min/max ("fluid A → B"); the vw term is the
+   * reference stylesheet's value for the same element (read 3 Nov 2026), the same source DESIGN
+   * used for the §5.5 display slopes. [APPROX]: reference-derived working values, not exact
+   * DESIGN values (owner decision, Checkpoint 4). The min/max are DESIGN's.
+   */
+  --section-title-size: clamp(1.25rem, 2.35vw, 2.25rem); /* 20 → 36; 2.35vw [APPROX] */
+  --section-title-journey-size: clamp(1.25rem, 2.1vw, 2rem); /* 20 → 32; 2.1vw [APPROX] */
+  --section-title-weight: 600;
+  --section-title-tracking: -0.06em;
+  --section-title-leading: 1.2;
+
+  --hero-role-size: clamp(1rem, 1.6vw, 1.5rem); /* 16 → 24; 1.6vw [APPROX] */
+  --hero-role-weight: 800;
+  --hero-role-tracking: -0.025em;
+  --hero-role-leading: 1.23;
+
+  --hero-top-size: 0.75rem; /* 12 */
+  --hero-top-weight-strong: 700; /* line 1, accent */
+  --hero-top-weight: 400;
+
+  --quote-size: clamp(1.25rem, 1.8vw, 1.75rem); /* 20 → 28; 1.8vw [APPROX] */
+  --quote-weight: 400;
+  --quote-tracking: -0.035em;
+  --quote-leading: 1.4;
+
+  --dialog-title-size: clamp(1.5rem, 3vw, 2rem); /* 24 → 32; 3vw [APPROX] */
+  --dialog-title-weight: 600;
+  --dialog-title-tracking: -0.04em;
+
+  --label-size: 0.75rem; /* 12 — weight 400–600 per component */
+  --eyebrow-size: 0.75rem; /* 12 */
+  --eyebrow-weight: 600;
+  --eyebrow-tracking: 0.055em;
+  --meta-size: 0.75rem; /* 12 */
+  --meta-weight: 400;
+  --micro-size: 0.625rem; /* 10 — weight 500–700 per component */
+  --micro-deco-size: 0.5rem; /* 8 — decorative showreel labels only; hidden ≤ 800 */
+  --nav-mobile-size: 1.25rem; /* 20 — phone menu only */
+  --nav-mobile-weight: 400;
+  --input-size: 1rem; /* 16 on every device (iPhone zoom rule) */
+
+  --hero-hello-size: clamp(2.25rem, 4.2vw, 4rem); /* 36 → 64; 4.2vw [APPROX] */
+  --hero-hello-rotate: -7deg;
+  --signature-size: 2.5rem; /* 40 */
+  --signature-rotate: -10deg;
+
+  /* ── Display tokens: Anton (DESIGN §5.5) — LG values ──────────────────────────────── */
+  --hero-word-size: min(25.3vw, 28.5rem); /* graphic sized to width; 28.5rem = 456 */
+  --hero-word-tracking: -0.024em;
+  --hero-name-size: clamp(3.5rem, 6.9vw, 7.25rem); /* 56 → 116 */
+  --hero-name-tracking: -0.025em;
+  --display-breakdown-size: clamp(3rem, 6vw, 5.5rem); /* 48 → 88 */
+  --display-breakdown-leading: 1.07;
+  --display-contact-size: clamp(2.5rem, 4.4vw, 4.5rem); /* 40 → 72 */
+  --display-contact-leading: 1.07;
+  --display-about-size: clamp(1.75rem, 3.55vw, 3.5rem); /* 28 → 56 */
+  --display-about-leading: 1.17;
+  --display-impact-size: clamp(2rem, 3.8vw, 3.5rem); /* 32 → 56 */
+  --display-impact-leading: 1.1;
+  --display-milestones-size: 2.75rem; /* 44 */
+  --display-milestones-leading: 1.1;
+  --impact-figure-size: 6.5rem; /* 104 */
+  /* "+" sizes not given at some breakpoints keep the previous breakpoint's value (owner decision). */
+  --impact-figure-plus-size: 4rem; /* 64 */
+  --stat-number-size: 3.25rem; /* 52 */
+  --stat-number-plus-size: 1.75rem; /* 28 */
+  --year-display-size: 2rem; /* 32 */
+  --card-number-size: 2rem; /* 32 */
+  --process-number-size: 1.25rem; /* 20 */
+  --quote-mark-size: 4.75rem; /* 76 */
+  --fallback-mark-size: 4rem; /* 64 */
+  --wordmark-size: 1.5rem; /* 24 */
+  --wordmark-footer-size: 1.3125rem; /* 21 — DESIGN §8.9 component spec over §5.5 table's 20 (owner decision, Checkpoint 4) */
+
+  /* ── Spacing and layout (DESIGN §6.1–§6.2) ────────────────────────────────────────── */
+  --gutter: clamp(20px, 3.8vw, 68px);
+  --content-max: 1800px;
+  --section-pad-y: 58px;
+  --header-height: 66px;
+  --anchor-offset: 85px;
+  --page-min-width: 320px;
+
+  /* Scale for new components only (case-study blocks, promotion marker). */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-58: 58px;
+
+  /* ── Shape, touch and focus (DESIGN §6.3, §6.5) ───────────────────────────────────── */
+  --radius: 0; /* square corners everywhere */
+  --radius-round: 50%; /* true circles only */
+  --border-hairline: 1px;
+  --border-reel: 3px;
+  --touch-target: 44px;
+  --filter-height: 48px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 5px;
+  --pressed-brightness: 0.85;
+
+  /*
+   * Layering, front to back (DESIGN §6.4). DESIGN fixes the order only; the numbers match the
+   * reference's measured stacking values.
+   */
+  --layer-skip-link: 200;
+  --layer-progress: 150;
+  --layer-grain: 120;
+  --layer-backdrop: 100;
+  --layer-header: 70;
+}
+
+/* ── MD ≤ 1100 ─────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  :root {
+    --panel-heading-size: 1rem; /* 16 */
+    --quote-size: 1.5rem; /* 24 */
+    --hero-name-size: 4.5rem; /* 72 */
+    --display-breakdown-size: 3.75rem; /* 60 */
+    --stat-number-size: 2.75rem; /* 44 */
+    --gutter: 30px;
+  }
+}
+
+/* ── SM ≤ 800 ──────────────────────────────────────────────────────────────────────── */
+@media (max-width: 800px) {
+  :root {
+    --section-title-size: 1.5rem; /* 24 */
+    --section-title-journey-size: 1.5rem; /* 24 */
+    --hero-role-size: 1rem; /* 16 */
+    --quote-size: 1.5rem; /* 24 */
+    --hero-name-size: 3.75rem; /* 60 */
+    --display-contact-size: 3.5rem; /* 56 */
+    --display-about-size: 1.75rem; /* 28 */
+    --display-impact-size: 2rem; /* 32 */
+    --display-milestones-size: 2.5rem; /* 40 */
+    --impact-figure-size: 5.25rem; /* 84 */
+    --stat-number-size: 2.5rem; /* 40 */
+    --year-display-size: 1.75rem; /* 28 */
+    --card-number-size: 1.75rem; /* 28 */
+    --gutter: 24px;
+    --section-pad-y: 38px;
+    --header-height: 60px;
+  }
+}
+
+/* ── XS ≤ 600 (phone) ──────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  :root {
+    --body-size: 0.875rem; /* 14 — phone base (DESIGN §5.2) */
+    --title-md-size: 1rem; /* 16 */
+    --title-sm-size: 0.875rem; /* 14 */
+    --card-title-size: 0.75rem; /* 12 */
+    --card-title-size-featured: 0.875rem; /* 14 */
+    --section-title-size: 1.25rem; /* 20 */
+    --section-title-journey-size: 1.25rem; /* 20 */
+    --section-title-tracking: -0.045em;
+    --hero-top-size: 0.625rem; /* 10 */
+    --quote-size: 1.25rem; /* 20 */
+    --dialog-title-size: 1.5rem; /* 24 */
+    --eyebrow-size: 0.625rem; /* 10 */
+    --meta-size: 0.625rem; /* 10 */
+    --hero-hello-size: 2.25rem; /* 36 */
+    --signature-size: 1.75rem; /* 28 */
+    --signature-rotate: -12deg;
+    --hero-word-size: 23.8vw;
+    --hero-name-size: 4rem; /* 64 */
+    --display-breakdown-size: 2.75rem; /* 44 */
+    --display-about-size: 2rem; /* 32 */
+    --display-impact-size: 1.75rem; /* 28 */
+    --display-milestones-size: 2.25rem; /* 36 */
+    --impact-figure-size: 3rem; /* 48 */
+    --impact-figure-plus-size: 1.75rem; /* 28 */
+    --stat-number-size: 2.25rem; /* 36 */
+    --stat-number-plus-size: 1.25rem; /* 20 */
+    --card-number-size: 1.5rem; /* 24 */
+    --quote-mark-size: 4rem; /* 64 */
+    --fallback-mark-size: 3rem; /* 48 */
+    --hero-word-fade-strength: 0.5;
+    --gutter: 20px;
+    --section-pad-y: 30px;
+    --header-height: 56px;
+    --anchor-offset: 72px;
+  }
+}
+
+/* ── XXS ≤ 370 (small phone) ───────────────────────────────────────────────────────── */
+@media (max-width: 370px) {
+  :root {
+    --quote-size: 1rem; /* 16 */
+    --hero-hello-size: 2rem; /* 32 */
+    --signature-size: 1.5rem; /* 24 */
+    --hero-name-size: 3.5rem; /* 56 */
+    --display-contact-size: 3rem; /* 48 */
+    --display-about-size: 1.75rem; /* 28 */
+    --display-impact-size: 1.5rem; /* 24 */
+    --display-milestones-size: 1.75rem; /* 28 */
+    --impact-figure-size: 2.75rem; /* 44 */
+  }
+}

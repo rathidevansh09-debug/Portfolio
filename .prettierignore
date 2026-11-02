@@ -9,6 +9,9 @@ IMPLEMENTATION_PLAN.md
 References/
 reference-captures/
 
+# Local design-hook tool state (not project code).
+.impeccable/
+
 # Generated output.
 dist/
 test-results/

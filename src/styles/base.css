@@ -1,0 +1,162 @@
+/*
+ * Global base styles (DESIGN §5.1–§5.3, §6.3–§6.5; ARCHITECTURE §5). Values come from tokens.css.
+ * The root font size is never set (DESIGN §5.3): browser text-size settings and zoom keep working.
+ */
+
+/* ── Reset ─────────────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  color-scheme: dark;
+  /* Prevent automatic text inflation on rotation; user zoom and text-size settings still apply. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Form fields stay 16 px on every device so iPhones do not zoom (DESIGN §5.2, PRD §8). */
+input,
+textarea,
+select {
+  font-size: var(--input-size);
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  text-wrap: balance; /* headings balance their line breaks (DESIGN §5.1) */
+}
+
+/* ── Page and body text ────────────────────────────────────────────────────────────── */
+html {
+  /* Native smooth anchor scrolling with room for the sticky header (PRD MO-3, DESIGN §6.1). */
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--anchor-offset);
+}
+
+body {
+  min-width: var(--page-min-width);
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  font-weight: var(--body-weight);
+  line-height: var(--leading-body);
+  font-synthesis: none; /* no synthetic bold/italic (DESIGN §5.1) */
+}
+
+/* ── Focus, selection, touch (DESIGN §6.5, §4.4) ──────────────────────────────────── */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--accent);
+  outline-offset: var(--focus-ring-offset);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent); /* white on accent fails contrast (DESIGN §4.7) */
+}
+
+a,
+button,
+input,
+select,
+textarea,
+summary,
+label {
+  -webkit-tap-highlight-color: transparent; /* no grey tap flash on touch devices */
+}
+
+/* ── Film grain (DESIGN §4.6; ARCHITECTURE §9.4) ──────────────────────────────────── */
+/*
+ * Our own texture: SVG fractal noise rendered white, tiled at a small size and shown at 3.5 %.
+ * Fixed above page content, ignores pointer input, no blend modes (ARCHITECTURE R-4).
+ * Pseudo-element content is not exposed to screen readers.
+ * Phase 11: a native modal <dialog> renders in the browser's top layer, above this grain, so the
+ * grain will not cover the pop-up backdrop as DESIGN §6.4 orders. Resolve there; no change now.
+ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: var(--layer-grain);
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ── Motion off / reduced motion (PRD MO-5; DESIGN §9.4) ──────────────────────────── */
+/*
+ * Contract for Phase 6: MotionPreferenceProvider sets data-motion="off" on <html> when the Motion
+ * toggle is off or the system asks for reduced motion. The media query covers the system setting
+ * before JavaScript runs. CSS transitions become instant; smooth scrolling becomes a jump.
+ * JavaScript-driven animations are handled by the motion layer in Phase 6.
+ */
+html[data-motion='off'] {
+  scroll-behavior: auto;
+}
+
+html[data-motion='off'] *,
+html[data-motion='off'] *::before,
+html[data-motion='off'] *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
