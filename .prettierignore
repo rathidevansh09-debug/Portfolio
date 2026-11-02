@@ -1,0 +1,15 @@
+# Approved planning documents are never reformatted (AGENTS §2.3).
+PRD.md
+DESIGN.md
+ARCHITECTURE.md
+AGENTS.md
+IMPLEMENTATION_PLAN.md
+
+# Read-only reference material (AGENTS §14.4).
+References/
+
+# Generated output.
+dist/
+test-results/
+playwright-report/
+package-lock.json

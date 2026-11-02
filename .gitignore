@@ -1,0 +1,32 @@
+# Public-repository safety (AGENTS §14.3, §14.4). Changed only at Project Setup on owner instruction.
+
+# Read-only local reference material: never committed or pushed (AGENTS §14.4).
+References/
+
+# Planning documents: kept locally, excluded from the public repository (owner decision, Phase 2).
+# Root-anchored so only these exact files are ignored, not other Markdown files.
+/PRD.md
+/DESIGN.md
+/ARCHITECTURE.md
+/AGENTS.md
+/IMPLEMENTATION_PLAN.md
+
+# Dependencies and build output.
+node_modules/
+dist/
+
+# Test output and reports (Vitest, Playwright).
+test-results/
+playwright-report/
+blob-report/
+coverage/
+
+# Environment and secret files. None are needed by this project (ARCHITECTURE §1.4).
+.env
+.env.*
+
+# Logs.
+*.log
+
+# macOS system files.
+.DS_Store
