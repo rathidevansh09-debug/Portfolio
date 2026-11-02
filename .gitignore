@@ -3,6 +3,9 @@
 # Read-only local reference material: never committed or pushed (AGENTS §14.4).
 References/
 
+# Captures of the live reference site and our build: local only, never committed (owner decision, Phase 3).
+/reference-captures/
+
 # Planning documents: kept locally, excluded from the public repository (owner decision, Phase 2).
 # Root-anchored so only these exact files are ignored, not other Markdown files.
 /PRD.md

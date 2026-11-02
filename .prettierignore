@@ -5,8 +5,9 @@ ARCHITECTURE.md
 AGENTS.md
 IMPLEMENTATION_PLAN.md
 
-# Read-only reference material (AGENTS §14.4).
+# Read-only reference material (AGENTS §14.4) and local reference captures.
 References/
+reference-captures/
 
 # Generated output.
 dist/

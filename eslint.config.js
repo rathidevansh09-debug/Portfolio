@@ -6,7 +6,14 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
-    ignores: ['dist/', 'node_modules/', 'References/', 'test-results/', 'playwright-report/'],
+    ignores: [
+      'dist/',
+      'node_modules/',
+      'References/',
+      'reference-captures/',
+      'test-results/',
+      'playwright-report/',
+    ],
   },
   js.configs.recommended,
   tseslint.configs.recommended,

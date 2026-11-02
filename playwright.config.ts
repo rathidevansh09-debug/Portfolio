@@ -11,8 +11,14 @@ import { defineConfig, devices } from '@playwright/test';
 const firefoxAppHome = join(tmpdir(), 'devansh-portfolio-playwright-firefox-home');
 mkdirSync(firefoxAppHome, { recursive: true });
 
-// Browser tests (ARCHITECTURE §11.4). Phase 3 adds the viewport presets, reduced-motion
-// variant and reference-capture helpers. WebKit is supplementary: it is not Safari.
+const firefoxUse = {
+  ...devices['Desktop Firefox'],
+  launchOptions: { env: { ...process.env, CFFIXED_USER_HOME: firefoxAppHome } },
+};
+
+// Browser tests (ARCHITECTURE §11.4). Each browser also runs with system "Reduce motion" emulated
+// (PRD MO-5). Viewport presets live in tests/e2e/helpers/viewports.ts. Worker count is
+// Playwright's default. WebKit is supplementary: it is not Safari.
 export default defineConfig({
   testDir: 'tests',
   testMatch: ['e2e/**/*.spec.ts', 'a11y/**/*.spec.ts'],
@@ -28,13 +34,19 @@ export default defineConfig({
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-        launchOptions: { env: { ...process.env, CFFIXED_USER_HOME: firefoxAppHome } },
-      },
-    },
+    { name: 'firefox', use: firefoxUse },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    {
+      name: 'chromium-reduced-motion',
+      use: { ...devices['Desktop Chrome'], contextOptions: { reducedMotion: 'reduce' } },
+    },
+    {
+      name: 'firefox-reduced-motion',
+      use: { ...firefoxUse, contextOptions: { reducedMotion: 'reduce' } },
+    },
+    {
+      name: 'webkit-reduced-motion',
+      use: { ...devices['Desktop Safari'], contextOptions: { reducedMotion: 'reduce' } },
+    },
   ],
 });
