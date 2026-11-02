@@ -19,8 +19,7 @@ import {
 } from './helpers/capture.ts';
 import { LOCAL_INTERACTIONS, REFERENCE_INTERACTIONS } from './helpers/interactions.ts';
 
-export const REFERENCE_URL =
-  'https://renando.duingzcreative.site/?utm_source=ig&utm_medium=social&utm_content=link_in_bio';
+export const REFERENCE_URL = 'https://renando.duingzcreative.site/';
 
 /** Motion recordings run at the two widths used for side-by-side checks (ARCHITECTURE §6.3). */
 const VIDEO_VIEWPORT_NAMES = ['desktop-1440', 'phone-390'];
