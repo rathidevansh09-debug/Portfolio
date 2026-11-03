@@ -1,0 +1,41 @@
+/* DESIGN §7.2 Motion toggle: 13 px icon + label, muted; hover ink. Gap and the phone minimum width
+   are reference measurements. */
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: var(--touch-target);
+  color: var(--muted);
+  font-size: var(--label-size);
+  transition: color var(--dur-hover) var(--ease-signature);
+}
+
+.toggle:hover:not([aria-disabled='true']) {
+  color: var(--ink);
+}
+
+.toggle:active:not([aria-disabled='true']) {
+  filter: brightness(var(--pressed-brightness));
+}
+
+/* Unavailable while the system asks for reduced motion (owner decision 5B). */
+.toggle[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+/* Explanation for assistive technology only (visually hidden, still announced). */
+.note {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .toggle {
+    min-width: 72px;
+    font-size: var(--micro-size); /* label at XS is 10 px for the Motion toggle (DESIGN §5.4) */
+  }
+}

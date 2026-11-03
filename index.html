@@ -1,12 +1,70 @@
 <!doctype html>
+<!--
+  Page shell (ARCHITECTURE §2.1, §9.3; PRD FR-G5, FR-G6, NFR-C2, NFR-S1, D-11, D-24).
+  Values mirror src/content/site.ts, profile.ts and contact.ts; tests/unit/indexHtml.test.ts fails
+  if they drift apart (owner decision, Phase 8). The full name appears ONLY in the author meta tag
+  and the JSON-LD Person data (D-11). Share image (og:image) is added when supplied (PENDING);
+  canonical URL and og:url wait for the domain (Phase 20). Hero portrait preload: Phase 9.
+-->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
-    <title>Devansh</title>
+    <title>Devansh — UX Designer &amp; Product Designer</title>
+    <meta
+      name="description"
+      content="Devansh is a UX Designer &amp; Product Designer crafting clear, usable digital products — from AI analytics platforms to eCommerce experiences."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Devansh — UX Designer &amp; Product Designer" />
+    <meta
+      property="og:description"
+      content="Devansh is a UX Designer &amp; Product Designer crafting clear, usable digital products — from AI analytics platforms to eCommerce experiences."
+    />
+    <meta name="author" content="Devansh Rathi" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Devansh Rathi",
+        "jobTitle": "UX Designer & Product Designer"
+      }
+    </script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- First-screen fonts (ARCHITECTURE §9.3; budget ≤ 4 files / 160 KB, §9.2). -->
+    <link
+      rel="preload"
+      href="/fonts/anton-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/manrope-variable-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/caveat-variable-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body>
+    <noscript>
+      <main>
+        <p>Devansh — UX Designer &amp; Product Designer</p>
+        <!-- Email link: contact.email is PENDING (owner approval to publish, NFR-PR3). -->
+        <p>PENDING</p>
+      </main>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

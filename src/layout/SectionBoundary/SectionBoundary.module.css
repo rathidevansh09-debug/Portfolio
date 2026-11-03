@@ -1,0 +1,12 @@
+/* Quiet fallback in the standard section frame (DESIGN §6.1). */
+.fallback {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--section-pad-y) var(--gutter);
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.message {
+  color: var(--muted);
+  font-size: var(--meta-size);
+}

@@ -13,9 +13,17 @@ export type IconButtonProps = WithoutContent<ActionProps> & {
   /** Accessible name (from content/ui.ts). Required: the button has no visible text. */
   readonly label: string;
   readonly borderless?: boolean;
+  /** Icon size in px; defaults to the Icon default. */
+  readonly iconSize?: number;
 };
 
-export function IconButton({ icon, label, borderless = false, ...props }: IconButtonProps) {
+export function IconButton({
+  icon,
+  label,
+  borderless = false,
+  iconSize,
+  ...props
+}: IconButtonProps) {
   return (
     <ActionBase
       {...(props as ActionProps)}
@@ -24,7 +32,7 @@ export function IconButton({ icon, label, borderless = false, ...props }: IconBu
         .filter(Boolean)
         .join(' ')}
     >
-      <Icon name={icon} />
+      <Icon name={icon} size={iconSize} />
     </ActionBase>
   );
 }

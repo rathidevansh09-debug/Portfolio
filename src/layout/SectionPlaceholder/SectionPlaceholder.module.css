@@ -1,0 +1,17 @@
+/* TEMPORARY (Phase 8 only). One screen tall so anchors and the active-section band can be tested;
+   not a design value. Uses the standard section frame (DESIGN §6.1). */
+.placeholder {
+  min-height: 100svh;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--section-pad-y) var(--gutter);
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.marker {
+  display: inline-block;
+  padding: 8px 12px;
+  border: var(--border-hairline) dashed var(--line-strong);
+  color: var(--muted);
+  font-size: var(--meta-size);
+}

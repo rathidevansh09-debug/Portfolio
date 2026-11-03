@@ -145,16 +145,12 @@ test('keyboard focus shows a 2px accent ring offset 5px', async ({ page, browser
   // Safari/WebKit on macOS moves Tab between form fields only; Option+Tab reaches buttons and links.
   const tabKey = browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
   await page.goto('/');
-  await page.evaluate(() => {
-    const button = document.createElement('button');
-    button.textContent = 'Focus probe';
-    button.id = 'focus-probe';
-    document.querySelector('main')?.append(button);
-  });
+  // Phase 8: the real skip link is the probe. It must be the first focusable element (FR-G2).
   await page.keyboard.press(tabKey);
-  await expect(page.locator('#focus-probe')).toBeFocused();
-  const ring = await page.evaluate(() => {
-    const s = getComputedStyle(document.getElementById('focus-probe') as HTMLElement);
+  const skip = page.getByRole('link', { name: 'Skip to work' });
+  await expect(skip).toBeFocused();
+  const ring = await skip.evaluate((el) => {
+    const s = getComputedStyle(el);
     return {
       width: s.outlineWidth,
       style: s.outlineStyle,

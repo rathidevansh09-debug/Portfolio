@@ -1,0 +1,133 @@
+/* DESIGN §7.3 header, §10 responsive; ARCHITECTURE §7.1 breakpoints. Gaps, the nav's 7 % margin,
+   the wordmark's tracking and its phone size are reference measurements (not specified in
+   DESIGN); DESIGN values win where both exist (nav labels stay 12 px at ≤ 800 px). */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--layer-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: var(--header-height);
+  padding: 0 var(--gutter);
+  background: var(--header-bg);
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+/* Wordmark DEVANSH — Anton 24 px, no ® (FR-H1, FR-G7). */
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-family: var(--font-display);
+  font-size: var(--wordmark-size);
+  line-height: 1;
+  letter-spacing: -0.0167em; /* reference: −0.4 px at 24 px */
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  margin-left: 7%;
+}
+
+/* Nav link (M-16, M-07b): muted; hover and active ink (0.25 s); active shows a 4 px accent dot
+   11 px to its left. The dot appears without a transition [OBSERVED reference]. */
+.link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  color: var(--muted);
+  font-size: var(--label-size);
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease-signature);
+}
+
+.link:hover,
+.link[aria-current] {
+  color: var(--ink);
+}
+
+.link[aria-current]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -11px;
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-round);
+  background: var(--accent);
+  transform: translateY(-50%);
+}
+
+.link:active,
+.talk:active,
+.wordmark:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* "Let's talk →" — label 12 px, accent arrow. */
+.talk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--touch-target);
+  font-size: var(--label-size);
+  text-decoration: none;
+}
+
+.talkArrow {
+  color: var(--accent);
+}
+
+@media (max-width: 1100px) {
+  .nav {
+    gap: 25px;
+    margin-left: 0;
+  }
+
+  .actions {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 800px) {
+  .nav {
+    gap: 20px;
+  }
+
+  .actions {
+    gap: 10px;
+  }
+
+  .talk {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    gap: 12px;
+  }
+
+  .wordmark {
+    font-size: 1.375rem; /* 22 — reference phone size */
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .actions {
+    gap: 13px;
+  }
+}

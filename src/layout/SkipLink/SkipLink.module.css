@@ -1,0 +1,19 @@
+/* DESIGN §7.1 skip link: ink background, bg text, top-left. Position and padding are reference
+   measurements. Appears without a transition: the reference stylesheet has none and DESIGN gives
+   no duration ([TO VERIFY] Phase 16). */
+.skip {
+  position: fixed;
+  top: 6px;
+  left: 15px;
+  z-index: var(--layer-skip-link);
+  padding: 14px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: var(--label-size);
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip:focus {
+  transform: translateY(0);
+}

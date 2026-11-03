@@ -1,0 +1,10 @@
+/* DESIGN §7.1, §6.4: 2 px accent bar, above the grain and the header, below the skip link. */
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--layer-progress);
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left center;
+  pointer-events: none;
+}

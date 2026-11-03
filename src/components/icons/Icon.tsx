@@ -17,6 +17,7 @@ import {
   Link,
   Mail,
   MapPin,
+  Menu,
   Minus,
   Pause,
   Phone,
@@ -38,6 +39,7 @@ const icons = {
   link: Link,
   mail: Mail,
   'map-pin': MapPin,
+  menu: Menu, // mobile menu button (Phase 8, owner decision 4)
   minus: Minus,
   pause: Pause,
   phone: Phone,

@@ -21,6 +21,9 @@ export const ui = {
     letsTalk: approved("Let's talk"), // FR-H5 (arrow is an icon)
     menuButton: pending('Accessible label for the mobile menu button'),
     closeMenu: pending('Accessible label for closing the mobile menu'),
+    motionSystemNote: pending(
+      "Accessible explanation that the device's Reduce motion setting keeps motion off (Motion toggle unavailable)",
+    ),
   },
   hero: {
     seeMyWork: draft('See my work'), // FR-HE4 (arrow direction open: I-5)
@@ -157,5 +160,6 @@ export const ui = {
     openOriginal: approved('Open original'),
     restrictedNote: approved("If the video is restricted, use 'Open original'."),
     playVideo: pending('Accessible name for the video Play button, e.g. "Play {title}"'),
+    sectionUnavailable: pending('Quiet message shown in place of a section that failed to load'),
   },
 } satisfies UiCopy;
