@@ -1,0 +1,35 @@
+/* DESIGN §7.2 round-arrow CTA; hover fills the ring; pressed 85 %. Magnetic pull is JS (M-14). */
+.magnet {
+  display: inline-block;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; /* reference measurement */
+  min-height: var(--touch-target);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  text-decoration: none;
+  transition: filter var(--dur-hover) var(--ease-signature);
+}
+
+.ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border: var(--border-hairline) solid var(--accent-border-soft);
+  border-radius: var(--radius-round);
+  transition: background-color var(--dur-hover-med) var(--ease-signature);
+}
+
+.cta:hover .ring {
+  background: var(--accent-ring-hover);
+}
+
+.cta:active {
+  filter: brightness(var(--pressed-brightness));
+}

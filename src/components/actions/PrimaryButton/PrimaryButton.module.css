@@ -1,0 +1,37 @@
+/* DESIGN §7.2 primary / solid button. Hover 0.25 s; pressed 85 % brightness; focus ring from base.css. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px; /* reference measurement; DESIGN gives only the solid variant's 25 px */
+  min-height: 46px;
+  padding: 0.875rem 1.1875rem; /* 14 × 19 px, in rem so it grows with text size */
+  border-radius: var(--radius);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  text-decoration: none;
+  transition:
+    background-color var(--dur-hover) var(--ease-signature),
+    filter var(--dur-hover) var(--ease-signature);
+}
+
+.button:hover {
+  background: var(--accent-fill-hover);
+}
+
+.button:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.solid {
+  justify-content: center;
+  gap: 25px;
+}
+
+@media (max-width: 600px) {
+  .solid {
+    width: 100%;
+  }
+}

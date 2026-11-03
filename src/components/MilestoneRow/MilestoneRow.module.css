@@ -1,0 +1,40 @@
+/* DESIGN §7.4 milestone row (large). Gap/padding: reference measurement. */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 89px;
+  padding: 20px 0;
+  border-top: var(--border-hairline) solid var(--line-row);
+}
+
+.index {
+  font-size: var(--meta-size);
+  color: var(--accent);
+}
+
+.text {
+  display: grid;
+  gap: var(--space-4);
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--title-md-size);
+  font-weight: var(--title-md-weight);
+  letter-spacing: var(--title-md-tracking);
+  color: var(--ink);
+}
+
+.context {
+  font-size: var(--meta-size);
+  color: var(--muted);
+}
+
+.value {
+  font-family: var(--font-display);
+  font-size: var(--year-display-size);
+  line-height: var(--leading-display);
+  color: var(--accent);
+}

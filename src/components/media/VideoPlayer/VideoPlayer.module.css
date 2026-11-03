@@ -1,0 +1,80 @@
+/* ARCHITECTURE §8.2 / DESIGN §8.10 video box: fills its parent media box (16:9 / 4:3 set by the
+   section), `surface-sunken` behind. */
+.player {
+  display: grid;
+  gap: var(--space-12);
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.poster,
+.media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: contain;
+}
+
+.play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+}
+
+.play:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-16);
+  padding: var(--space-24);
+  text-align: center;
+  background: var(--surface-sunken);
+}
+
+.message {
+  font-size: var(--body-size);
+  color: var(--ink-soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-16);
+}
+
+.original {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: var(--touch-target);
+  color: var(--ink);
+  font-size: var(--label-size);
+}
+
+.original:hover {
+  color: var(--accent);
+}
+
+.note {
+  font-size: var(--label-size);
+  color: var(--muted);
+}

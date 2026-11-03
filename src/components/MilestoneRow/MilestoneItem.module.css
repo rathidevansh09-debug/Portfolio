@@ -1,0 +1,48 @@
+/* DESIGN §7.4 milestone item (small): min 72 px; hover turns the arrow accent (M-07b). */
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  width: 100%;
+  min-height: 72px;
+  border-top: var(--border-hairline) solid var(--line);
+  text-align: left;
+  color: var(--ink);
+  transition: filter var(--dur-hover) var(--ease-signature);
+}
+
+.item:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.index {
+  font-size: var(--meta-size);
+  color: var(--accent);
+}
+
+.text {
+  display: grid;
+  gap: var(--space-4);
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--title-sm-size);
+  font-weight: var(--title-sm-weight);
+}
+
+.year {
+  font-size: var(--meta-size);
+  color: var(--muted);
+}
+
+.arrow {
+  display: inline-flex;
+  color: var(--muted);
+  transition: color var(--dur-hover) var(--ease-signature);
+}
+
+.item:hover .arrow {
+  color: var(--accent);
+}

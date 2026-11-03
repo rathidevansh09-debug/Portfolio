@@ -1,0 +1,35 @@
+.row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px; /* reference measurement */
+  margin-bottom: 22px; /* DESIGN §7.1 */
+}
+
+.text {
+  display: grid;
+  gap: var(--space-12);
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-body);
+  font-size: var(--section-title-size);
+  font-weight: var(--section-title-weight);
+  letter-spacing: var(--section-title-tracking);
+  line-height: var(--section-title-leading);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.title[data-variant='journey'] {
+  font-size: var(--section-title-journey-size);
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.action {
+  flex-shrink: 0;
+}

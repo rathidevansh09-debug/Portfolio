@@ -1,0 +1,26 @@
+/* DESIGN §7.2 icon button: hover background 0.2 s; pressed 85 %. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border: var(--border-hairline) solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  transition:
+    background-color var(--dur-hover-fast) var(--ease-signature),
+    filter var(--dur-hover-fast) var(--ease-signature);
+}
+
+.button:hover {
+  background: var(--icon-hover-bg);
+}
+
+.button:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.borderless {
+  border-color: transparent;
+}

@@ -1,0 +1,46 @@
+.heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: var(--leading-display);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.line {
+  display: block;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.heading[data-size='hero-name'] {
+  font-size: var(--hero-name-size);
+  letter-spacing: var(--hero-name-tracking);
+  white-space: nowrap; /* one line (DESIGN §5.7) */
+}
+
+.heading[data-size='display-breakdown'] {
+  font-size: var(--display-breakdown-size);
+  line-height: var(--display-breakdown-leading);
+}
+
+.heading[data-size='display-contact'] {
+  font-size: var(--display-contact-size);
+  line-height: var(--display-contact-leading);
+}
+
+.heading[data-size='display-about'] {
+  font-size: var(--display-about-size);
+  line-height: var(--display-about-leading);
+}
+
+.heading[data-size='display-impact'] {
+  font-size: var(--display-impact-size);
+  line-height: var(--display-impact-leading);
+}
+
+.heading[data-size='display-milestones'] {
+  font-size: var(--display-milestones-size);
+  line-height: var(--display-milestones-leading);
+}

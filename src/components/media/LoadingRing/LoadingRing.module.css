@@ -1,0 +1,39 @@
+/* DESIGN §7.5 loading ring; M-19 rotation (1 s, linear). Stops when motion is off. */
+.status {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.ring {
+  display: block;
+  width: 25px;
+  height: 25px;
+  border: var(--border-hairline) solid var(--accent-border-soft);
+  border-top-color: var(--accent);
+  border-radius: var(--radius-round);
+  animation: spin var(--dur-spinner) linear infinite;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  color: var(--muted);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:global(html[data-motion='off']) .ring {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    animation: none;
+  }
+}

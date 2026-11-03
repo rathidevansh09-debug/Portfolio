@@ -1,0 +1,32 @@
+/* DESIGN §7.2 outline button: hover tint fill + accent border (0.25 s); pressed 85 %. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  min-height: var(--touch-target);
+  padding: 0.75rem 1.125rem; /* 12 × 18 px */
+  border: var(--border-hairline) solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  text-decoration: none;
+  transition:
+    background-color var(--dur-hover) var(--ease-signature),
+    border-color var(--dur-hover) var(--ease-signature),
+    filter var(--dur-hover) var(--ease-signature);
+}
+
+.button:hover {
+  background: var(--accent-tint-bg);
+  border-color: var(--accent);
+}
+
+.button:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.block {
+  width: 100%;
+}

@@ -1,0 +1,41 @@
+/* DESIGN §7.5 media image: reserved box, 0.5 s fade-in on load (instant when motion is off). */
+.box {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-media);
+}
+
+.box[data-fit='cover'],
+.box[data-fit='contain'] {
+  position: absolute;
+  inset: 0;
+}
+
+.box[data-fit='contain'] {
+  background: var(--surface-sunken); /* letterbox colour (ARCHITECTURE §8.1) */
+}
+
+.box picture {
+  display: contents;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--dur-image-fade) var(--ease-signature);
+}
+
+.box[data-fit='natural'] .img,
+.box[data-fit='cover'] .img {
+  object-fit: cover;
+}
+
+.box[data-fit='contain'] .img {
+  object-fit: contain;
+}
+
+.box[data-state='loaded'] .img {
+  opacity: 1;
+}

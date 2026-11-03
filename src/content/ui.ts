@@ -156,5 +156,6 @@ export const ui = {
     tryAgain: approved('Try again'),
     openOriginal: approved('Open original'),
     restrictedNote: approved("If the video is restricted, use 'Open original'."),
+    playVideo: pending('Accessible name for the video Play button, e.g. "Play {title}"'),
   },
 } satisfies UiCopy;

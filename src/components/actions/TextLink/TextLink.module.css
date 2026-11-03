@@ -1,0 +1,35 @@
+/* DESIGN §7.2 text link; M-07b arrow shift. Pressed 85 %. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: var(--touch-target);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--label-size);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: filter var(--dur-hover) var(--ease-signature);
+}
+
+.label {
+  transition: color var(--dur-hover-med) var(--ease-signature);
+}
+
+.arrow {
+  display: inline-flex;
+  transition: transform var(--dur-hover-med) var(--ease-signature);
+}
+
+.link:hover .label {
+  color: var(--accent);
+}
+
+.link:hover .arrow {
+  transform: translateX(var(--text-link-arrow-shift));
+}
+
+.link:active {
+  filter: brightness(var(--pressed-brightness));
+}

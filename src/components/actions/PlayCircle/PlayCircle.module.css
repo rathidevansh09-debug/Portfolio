@@ -1,0 +1,36 @@
+/* DESIGN §7.2 play circle. The button keeps a 44 px touch target around the 32 px circle. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  border-radius: var(--radius-round);
+  transition: filter var(--dur-hover-med) var(--ease-signature);
+}
+
+.button:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: var(--border-hairline) solid var(--accent);
+  border-radius: var(--radius-round);
+  color: var(--ink);
+  transition:
+    background-color var(--dur-hover-med) var(--ease-signature),
+    color var(--dur-hover-med) var(--ease-signature);
+}
+
+.button:hover .circle,
+:global(a:hover) > .circle,
+:global(button:hover) > .circle {
+  background: var(--accent);
+  color: var(--on-accent);
+}
