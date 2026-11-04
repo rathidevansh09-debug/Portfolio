@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { pending } from '../../src/content/pending.ts';
 import type { Brand, Milestone, Stat } from '../../src/content/schema.ts';
 import {
@@ -97,5 +97,15 @@ describe('selectors enforce honesty rules (ARCHITECTURE §4.1 rule 4)', () => {
     expect(selectJourneyPanel(1, pending('d'))).toBe('shown');
     expect(selectJourneyPanel(0, pending('d'))).toBe('awaiting-decision');
     expect(selectJourneyPanel(0, 'hide')).toBe('hidden');
+  });
+});
+
+describe('content mode (owner decision 3, Phase 9; used by Phase 10 publishing)', () => {
+  it('development builds review PENDING items; production shows confirmed content only', async () => {
+    const { currentContentMode } = await import('../../src/lib/selectors.ts');
+    expect(currentContentMode()).toBe('development');
+    vi.stubEnv('DEV', false);
+    expect(currentContentMode()).toBe('production');
+    vi.unstubAllEnvs();
   });
 });

@@ -1,0 +1,13 @@
+/* DESIGN §7.5 empty state: centred, 55 px vertical padding, body muted + text link. */
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 55px 20px;
+  text-align: center;
+}
+
+.message {
+  color: var(--muted);
+}

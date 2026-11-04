@@ -1,0 +1,27 @@
+/* DESIGN §8.2: centred, 30 px below the grid; count label 12 px muted. Gap is a reference
+   measurement; phones stack with a full-width button (DESIGN §10). */
+.row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.count {
+  color: var(--muted);
+  font-size: var(--label-size);
+}
+
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .button {
+    justify-content: center;
+    width: 100%;
+  }
+}

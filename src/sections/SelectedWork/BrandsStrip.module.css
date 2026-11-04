@@ -1,0 +1,232 @@
+/* DESIGN §8.3 brands strip and §7.4 brand logo. Geometry DESIGN does not give is a reference
+   measurement (marked). */
+.brands {
+  min-width: 0;
+  margin-top: 38px;
+  padding-top: 22px;
+  border-top: var(--border-hairline) solid var(--line);
+}
+
+.heading {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px; /* reference */
+}
+
+/* "BEEN PART OF" (label 12 px, muted) over "THE BIGGER PICTURE." (ink, 500). */
+.title {
+  font-size: var(--label-size);
+  line-height: 1.7;
+}
+
+.line1 {
+  display: block;
+  color: var(--muted);
+}
+
+.line2 {
+  display: block;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.controls {
+  display: flex;
+  gap: 7px; /* reference */
+  align-items: center;
+}
+
+.seeAll {
+  display: flex;
+  gap: 13px; /* reference */
+  align-items: center;
+  min-height: var(--touch-target);
+  margin-right: 12px; /* reference */
+  font-size: var(--label-size);
+  text-transform: uppercase;
+  transition: color var(--dur-hover) var(--ease-signature);
+}
+
+.seeAll:hover {
+  color: var(--accent);
+}
+
+.seeAll:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.control {
+  color: var(--muted);
+}
+
+/* Strip: at least 92 px tall, no visible scrollbar. */
+.viewport {
+  max-width: 100%;
+  min-height: 92px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.rail,
+.set {
+  display: flex;
+  align-items: center;
+  width: max-content;
+}
+
+/* Two identical sets with 40 px gaps; the trailing padding keeps the loop seamless. */
+.set {
+  gap: 40px;
+  padding-right: 40px;
+}
+
+/* Cell 150 × 80 px; logo fitted in 130 × 55 px. */
+.logo {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 80px;
+}
+
+.logoBox {
+  position: relative;
+  display: block;
+  width: 130px;
+  height: 55px;
+  opacity: 0.7;
+  filter: grayscale(1);
+  transition:
+    filter var(--dur-hover-med) var(--ease-signature),
+    opacity var(--dur-hover-med) var(--ease-signature),
+    transform var(--dur-hover-med) var(--ease-signature);
+}
+
+/* Logos sit on the page, not on a reserved panel. */
+.logoBox .logoMedia.logoMedia {
+  background: transparent;
+}
+
+/* M-07b: greyscale at 70 % → full colour and 1.06×, mouse only. */
+@media (hover: hover) and (pointer: fine) {
+  .logo:hover .logoBox,
+  .cell:hover .logoBox {
+    opacity: 1;
+    filter: none;
+    transform: scale(var(--logo-hover-scale));
+  }
+}
+
+/* "See all" grid: 6 columns (SM 4 · XS 3), 24 × 22 px gaps, cells 105 px, logo above its name. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 24px 22px;
+  padding-bottom: 10px; /* reference */
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 13px; /* reference */
+  align-items: center;
+  justify-content: center;
+  height: 105px;
+}
+
+.cell .logoBox {
+  width: 100%;
+  max-width: 130px;
+}
+
+.name {
+  color: var(--muted);
+  font-size: var(--micro-size);
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .set {
+    gap: 30px;
+    padding-right: 30px;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .logoBox {
+    width: 110px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .brands {
+    margin-top: 26px;
+    padding-top: 18px;
+  }
+
+  .heading {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .controls {
+    gap: 0;
+    margin-left: auto;
+  }
+
+  .seeAll {
+    gap: 7px;
+    margin-right: 6px;
+  }
+
+  .viewport {
+    min-height: 72px;
+  }
+
+  .set {
+    gap: 23px;
+    padding-right: 23px;
+  }
+
+  .logo {
+    width: 96px;
+    height: 66px;
+  }
+
+  .logoBox {
+    width: 84px;
+    height: 39px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 12px;
+  }
+
+  .cell {
+    gap: 9px;
+    height: 90px;
+  }
+
+  .cell .logoBox {
+    width: 86px;
+    height: 40px;
+  }
+}

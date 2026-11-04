@@ -1,0 +1,24 @@
+/* DESIGN §8.2 grid: 3 columns, 28 px row gap, 22 px column gap. SM/XS gaps are reference
+   measurements; XS has 2 columns (DESIGN §10). */
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 800px) {
+  .grid {
+    gap: 20px 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 19px 12px;
+  }
+}

@@ -10,11 +10,12 @@ import { SectionBoundary } from './layout/SectionBoundary/SectionBoundary.tsx';
 import { SectionPlaceholder } from './layout/SectionPlaceholder/SectionPlaceholder.tsx';
 import { SkipLink } from './layout/SkipLink/SkipLink.tsx';
 import { Hero, type HeroLabels } from './sections/Hero/Hero.tsx';
+import { SelectedWork, type SelectedWorkLabels } from './sections/SelectedWork/SelectedWork.tsx';
 import { copyText } from './lib/copy.ts';
 import { ModalProvider } from './modal/ModalProvider.tsx';
 import { MotionPreferenceProvider } from './motion/MotionPreference.tsx';
 
-const { ui, profile, site } = content;
+const { ui, profile, site, projects, projectIndex, filters, brands } = content;
 
 // Section anchors (PRD §5). Breakdown has no anchor and no nav link.
 const HOME: NavItem = { id: 'home', label: copyText(ui.nav.home) };
@@ -47,9 +48,46 @@ const HERO_LABELS: HeroLabels = {
   imageFallback: { mark: site.favicon.monogram, label: copyText(ui.states.imageUnavailable) },
 };
 
+const IMAGE_FALLBACK = {
+  mark: site.favicon.monogram,
+  label: copyText(ui.states.imageUnavailable),
+};
+const WORK_LABELS: SelectedWorkLabels = {
+  eyebrow: copyText(ui.work.eyebrow),
+  headline: copyText(ui.work.headline),
+  allWork: copyText(ui.work.allWorkToggle),
+  selectedWork: copyText(ui.work.selectedWorkToggle),
+  filterAll: copyText(ui.work.filterAll),
+  filtersLabel: copyText(ui.work.filtersLabel),
+  search: copyText(ui.work.search),
+  showMore: copyText(ui.work.showMore),
+  count: copyText(ui.work.count),
+  empty: copyText(ui.work.empty),
+  resetSearch: copyText(ui.work.resetSearch),
+  announcement: copyText(ui.work.resultAnnouncement),
+  // Chip wording may be PENDING; the card shows a development marker or nothing.
+  chips: {
+    'case-study': ui.work.typeCaseStudy,
+    website: ui.work.typeWebsite,
+    'video-motion': ui.work.typeVideoMotion,
+    'before-after': ui.work.typeBeforeAfter,
+  },
+  imageFallback: IMAGE_FALLBACK,
+  brands: {
+    headingLine1: copyText(ui.brands.headingLine1),
+    headingLine2: copyText(ui.brands.headingLine2),
+    seeAll: copyText(ui.brands.seeAll),
+    showStrip: copyText(ui.brands.showStrip),
+    autoScroll: copyText(ui.brands.autoScroll),
+    previous: copyText(ui.brands.previous),
+    next: copyText(ui.brands.next),
+    region: copyText(ui.brands.regionLabel),
+    imageFallback: IMAGE_FALLBACK,
+  },
+};
+
 // TEMPORARY development placeholders (owner decision, Phase 8), replaced by each section's phase.
 const SECTIONS: readonly { id?: string; name: string; phase: number }[] = [
-  { id: 'portfolio', name: 'Selected Work', phase: 10 },
   { id: 'impact', name: 'Impact & Milestones', phase: 12 },
   { name: 'Breakdown', phase: 12 },
   { id: 'about', name: 'About', phase: 13 },
@@ -74,6 +112,16 @@ export default function App() {
         <main>
           <SectionBoundary id={HOME.id} fallback={SECTION_FALLBACK}>
             <Hero id={HOME.id} profile={profile} labels={HERO_LABELS} workHref="#portfolio" />
+          </SectionBoundary>
+          <SectionBoundary id="portfolio" fallback={SECTION_FALLBACK}>
+            <SelectedWork
+              id="portfolio"
+              projects={projects}
+              index={projectIndex}
+              filters={filters}
+              brands={brands}
+              labels={WORK_LABELS}
+            />
           </SectionBoundary>
           {SECTIONS.map((section) => (
             <SectionBoundary key={section.name} id={section.id} fallback={SECTION_FALLBACK}>

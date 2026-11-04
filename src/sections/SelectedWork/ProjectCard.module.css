@@ -1,0 +1,149 @@
+/* DESIGN §7.4 project card (static until Phase 11): media frame 1.65 : 1 (phones 1.5 : 1, first
+   card 1.9 : 1), surface-card, 1 px line; image oversized 12 px top/bottom for drift (M-06) at
+   55 % saturation (90 % on touch screens); 9 px inner frame; type chip top-left at 15 px; caption
+   row min 84 px with a line bottom border. No hover change and default cursor (owner decision). */
+.item {
+  min-width: 0;
+  list-style: none;
+}
+
+.card {
+  cursor: default;
+}
+
+.media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1.65 / 1;
+  border: var(--border-hairline) solid var(--line);
+  background: var(--surface-card);
+}
+
+.picture {
+  position: absolute;
+  inset: -12px 0;
+  filter: saturate(var(--card-saturation-rest));
+}
+
+@media (hover: none) {
+  .picture {
+    filter: saturate(var(--card-saturation-touch));
+  }
+}
+
+.chip {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+  padding: 5px 7px; /* reference */
+  background: var(--chip-bg);
+  color: var(--ink);
+  font-size: var(--micro-size);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.frame {
+  position: absolute;
+  inset: 9px;
+  border: var(--border-hairline) solid var(--frame-inner);
+  pointer-events: none;
+}
+
+.caption {
+  display: flex;
+  gap: 14px; /* reference */
+  align-items: center;
+  min-height: 84px; /* DESIGN §5.6 */
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.number {
+  min-width: 29px; /* reference */
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--card-number-size);
+  line-height: 1;
+}
+
+.text {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+/* One line with an ellipsis (DESIGN §10). */
+.title {
+  overflow: hidden;
+  font-size: var(--card-title-size);
+  font-weight: var(--card-title-weight);
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.category {
+  display: block;
+  margin-top: 5px; /* reference */
+  color: var(--muted);
+  font-size: var(--meta-size);
+  text-transform: uppercase;
+}
+
+@media (max-width: 800px) {
+  .chip {
+    top: 10px;
+    left: 10px;
+  }
+
+  .caption {
+    gap: 8px;
+  }
+
+  .number {
+    min-width: 23px;
+  }
+}
+
+/* XS: 2 columns; the first card spans both at 1.9 : 1, the others are 1.5 : 1 (DESIGN §7.4). */
+@media (max-width: 600px) {
+  .item[data-first] {
+    grid-column: 1 / -1;
+  }
+
+  .media {
+    aspect-ratio: 1.5 / 1;
+  }
+
+  .item[data-first] .media {
+    aspect-ratio: 1.9 / 1;
+  }
+
+  .chip {
+    top: 8px;
+    left: 8px;
+    padding: 4px 5px;
+  }
+
+  .frame {
+    inset: 6px;
+  }
+
+  .caption {
+    gap: 9px;
+    min-height: 60px;
+  }
+
+  .item[data-first] .caption {
+    min-height: 68px;
+  }
+
+  .number {
+    min-width: 21px;
+  }
+
+  .item[data-first] .title {
+    font-size: var(--card-title-size-featured);
+  }
+}

@@ -11,8 +11,13 @@ beforeEach(() => {
   })) as unknown as typeof window.matchMedia;
   window.IntersectionObserver = class {
     observe() {}
+    unobserve() {}
     disconnect() {}
   } as unknown as typeof IntersectionObserver;
+  window.ResizeObserver = class {
+    observe() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
 });
 
 describe('App: page shell (ARCHITECTURE §3.1; PRD §5)', () => {
@@ -30,7 +35,7 @@ describe('App: page shell (ARCHITECTURE §3.1; PRD §5)', () => {
     const sections = [...container.querySelectorAll('main > section')] as HTMLElement[];
     expect(sections.map((s) => [s.dataset.placeholder ?? 'real', s.id])).toEqual([
       ['real', 'home'], // Hero (Phase 9)
-      ['Selected Work', 'portfolio'],
+      ['real', 'portfolio'], // Selected Work (Phase 10)
       ['Impact & Milestones', 'impact'],
       ['Breakdown', ''],
       ['About', 'about'],

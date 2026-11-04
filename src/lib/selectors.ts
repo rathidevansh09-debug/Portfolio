@@ -23,6 +23,11 @@ import {
 
 export type ContentMode = 'production' | 'development';
 
+/** This build's mode: development builds review PENDING items; production shows confirmed only. */
+export function currentContentMode(): ContentMode {
+  return import.meta.env.DEV ? 'development' : 'production';
+}
+
 const allowed = (permission: OrPending<boolean>, mode: ContentMode): boolean =>
   permission === true || (mode === 'development' && isPending(permission));
 

@@ -1,0 +1,59 @@
+/* DESIGN §7.4 filter tabs: 20 px gaps, 48 px tall, label 12 px muted; selected ink + 2 px accent
+   underline. Tab colour 0.2 s (DESIGN §9.1). Scrolls sideways without a visible scrollbar. */
+.tabs {
+  display: flex;
+  gap: 20px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  flex-shrink: 0;
+  min-width: var(--touch-target);
+  min-height: var(--filter-height);
+  padding-inline: 3px; /* reference */
+  color: var(--muted);
+  font-size: var(--label-size);
+  transition: color var(--dur-hover-fast) var(--ease-signature);
+}
+
+.tab:hover,
+.tab[aria-pressed='true'] {
+  color: var(--ink);
+}
+
+.tab:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.underline {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* MD: tabs spread across the full toolbar width (reference). */
+@media (max-width: 1100px) {
+  .tabs {
+    justify-content: space-between;
+    width: 100%;
+    gap: 15px;
+  }
+}
+
+/* XS: tabs start at the left and scroll sideways (DESIGN §10). */
+@media (max-width: 600px) {
+  .tabs {
+    justify-content: start;
+    gap: 22px;
+  }
+}

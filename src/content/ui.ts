@@ -39,6 +39,9 @@ export const ui = {
     allWorkToggle: approved('ALL WORK'),
     selectedWorkToggle: approved('SELECTED WORK'),
     filterAll: approved('All'), // D-03
+    filtersLabel: pending(
+      'Accessible label for the project filter group, e.g. "Project categories"',
+    ),
     search: approved('Search'), // DESIGN §7.4
     showMore: approved('Show more work'), // FR-W6
     count: approved('{shown} of {total} projects'), // FR-W6 "X of Y projects"
@@ -57,7 +60,9 @@ export const ui = {
     headingLine1: draft('BEEN PART OF'), // FR-B1
     headingLine2: draft('THE BIGGER PICTURE.'),
     seeAll: approved('SEE ALL ({count})'),
-    pause: pending('Accessible label for the logo-strip pause/play button'),
+    autoScroll: approved('Logo auto-scroll'), // owner wording, Checkpoint 10 (stable name)
+    showStrip: pending('Label for the "See all" toggle while the grid is open (back to the strip)'),
+    regionLabel: pending('Accessible label for the scrollable logo-strip region'),
     previous: pending('Accessible label for the previous-logos button'),
     next: pending('Accessible label for the next-logos button'),
   },

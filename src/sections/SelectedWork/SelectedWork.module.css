@@ -1,0 +1,48 @@
+/* Standard section frame (DESIGN §6.1) and the toolbar (DESIGN §7.4, §8.2): filters left, search
+   right, between two line borders, 25 px below. MD: search moves to its own row (DESIGN §10). */
+.section {
+  position: relative;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--section-pad-y) var(--gutter);
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.toolbar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  border-top: var(--border-hairline) solid var(--line);
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.brandsPending {
+  margin-top: 38px;
+  padding-top: 22px;
+  border-top: var(--border-hairline) solid var(--line);
+}
+
+/* Announced, not shown (A-8). */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .toolbar {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .toolbar {
+    margin-bottom: 20px;
+  }
+}
