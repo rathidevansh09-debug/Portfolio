@@ -9,11 +9,12 @@ import { ReadingProgress } from './layout/ReadingProgress/ReadingProgress.tsx';
 import { SectionBoundary } from './layout/SectionBoundary/SectionBoundary.tsx';
 import { SectionPlaceholder } from './layout/SectionPlaceholder/SectionPlaceholder.tsx';
 import { SkipLink } from './layout/SkipLink/SkipLink.tsx';
+import { Hero, type HeroLabels } from './sections/Hero/Hero.tsx';
 import { copyText } from './lib/copy.ts';
 import { ModalProvider } from './modal/ModalProvider.tsx';
 import { MotionPreferenceProvider } from './motion/MotionPreference.tsx';
 
-const { ui, profile } = content;
+const { ui, profile, site } = content;
 
 // Section anchors (PRD §5). Breakdown has no anchor and no nav link.
 const HOME: NavItem = { id: 'home', label: copyText(ui.nav.home) };
@@ -32,10 +33,22 @@ const MOTION_LABELS = {
 };
 const MENU_LABELS = { open: copyText(ui.nav.menuButton), close: copyText(ui.nav.closeMenu) };
 const SECTION_FALLBACK = copyText(ui.states.sectionUnavailable);
+const HERO_LABELS: HeroLabels = {
+  supportingLine: copyText(profile.supportingLine),
+  hello: copyText(profile.helloLine),
+  availability: copyText(profile.availability.text),
+  manifestoLines: profile.manifestoLines.map(copyText),
+  seeMyWork: copyText(ui.hero.seeMyWork),
+  downloadCv: copyText(ui.hero.downloadCv),
+  playShowreel: copyText(ui.hero.playShowreel),
+  showreelSecondary: copyText(ui.hero.showreelSecondary),
+  scrollToDiscover: copyText(ui.hero.scrollToDiscover),
+  editionTemplate: copyText(ui.hero.editionLabel),
+  imageFallback: { mark: site.favicon.monogram, label: copyText(ui.states.imageUnavailable) },
+};
 
 // TEMPORARY development placeholders (owner decision, Phase 8), replaced by each section's phase.
 const SECTIONS: readonly { id?: string; name: string; phase: number }[] = [
-  { id: 'home', name: 'Hero', phase: 9 },
   { id: 'portfolio', name: 'Selected Work', phase: 10 },
   { id: 'impact', name: 'Impact & Milestones', phase: 12 },
   { name: 'Breakdown', phase: 12 },
@@ -59,6 +72,9 @@ export default function App() {
           menuLabels={MENU_LABELS}
         />
         <main>
+          <SectionBoundary id={HOME.id} fallback={SECTION_FALLBACK}>
+            <Hero id={HOME.id} profile={profile} labels={HERO_LABELS} workHref="#portfolio" />
+          </SectionBoundary>
           {SECTIONS.map((section) => (
             <SectionBoundary key={section.name} id={section.id} fallback={SECTION_FALLBACK}>
               <SectionPlaceholder id={section.id} name={section.name} phase={section.phase} />

@@ -8,6 +8,9 @@ export const profile: ProfileContent = {
   wordmark: 'DEVANSH', // CONFIRMED (FR-H1, no ®)
   heroName: 'DEVANSH.', // CONFIRMED (FR-HE4)
   heroWord: 'PORTFOLIO', // FR-HE2 (decorative giant word)
+  portrait: pending(
+    'Hero portrait: transparent PNG, at least 1024 × 1536 (2 : 3), waist-up, with alt text (DESIGN §11.2)',
+  ),
   topStripRole: 'UX DESIGNER & PRODUCT DESIGNER', // FR-HE1
   supportingLine: draft('VIDEO · VISUAL · MOTION'),
   helloLine: approved("Hello, I'm"), // FR-HE4 (not marked draft)

@@ -362,6 +362,8 @@ export interface ProfileContent {
   readonly wordmark: string;
   readonly heroName: string;
   readonly heroWord: string;
+  /** Hero cut-out portrait (FR-HE3; DESIGN §11.2): transparent PNG with required alt text. */
+  readonly portrait: OrPending<ImageRef>;
   readonly topStripRole: string;
   readonly supportingLine: Copy;
   readonly helloLine: Copy;

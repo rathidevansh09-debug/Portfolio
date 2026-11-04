@@ -1,0 +1,33 @@
+/* Development-only placeholder: a dashed outline that cannot be mistaken for real content. */
+.marker {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 100%;
+  padding: 6px 8px;
+  border: var(--border-hairline) dashed var(--line-strong);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: var(--micro-size);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.marker[data-variant='fill'] {
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.label {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.note {
+  overflow-wrap: anywhere;
+}

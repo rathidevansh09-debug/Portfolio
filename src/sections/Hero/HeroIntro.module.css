@@ -1,0 +1,159 @@
+/* DESIGN §8.1 intro block, §10 responsive. Positions, gaps and widths are DESIGN §8.1 values or,
+   where DESIGN is silent, reference-stylesheet measurements (marked). */
+.depth {
+  position: absolute;
+  bottom: 110px;
+  left: var(--gutter);
+  z-index: 3;
+  width: 28%;
+}
+
+.hello {
+  margin-bottom: 8px; /* reference */
+  font-family: var(--font-hand);
+  font-size: var(--hero-hello-size);
+  line-height: 1.15; /* reference */
+  transform: rotate(var(--hero-hello-rotate));
+  transform-origin: left center;
+}
+
+.name {
+  margin-bottom: 14px; /* reference */
+}
+
+/* "UX DESIGNER & / PRODUCT DESIGNER": two lines, accent (FR-HE4). */
+.role {
+  margin-bottom: 18px;
+  color: var(--accent);
+  font-size: var(--hero-role-size);
+  font-weight: var(--hero-role-weight);
+  letter-spacing: var(--hero-role-tracking);
+  line-height: var(--hero-role-leading);
+}
+
+.role > span {
+  display: block;
+}
+
+.description {
+  max-width: 320px; /* DESIGN §5.6 [TO VERIFY] */
+  margin-bottom: 21px;
+  color: var(--ink-soft);
+}
+
+.location {
+  display: flex;
+  gap: 8px; /* reference */
+  align-items: center;
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: var(--meta-size);
+  text-transform: uppercase;
+}
+
+.pin {
+  color: var(--accent);
+}
+
+/* Placement only, for the development PENDING marker. */
+.locationSlot {
+  margin-top: 22px;
+}
+
+@media (max-width: 1100px) {
+  .depth {
+    width: 30%;
+  }
+}
+
+@media (max-width: 800px) {
+  .depth {
+    width: 33%;
+  }
+}
+
+/* Phone (DESIGN §8.1 [OBSERVED]): "Hello, I'm" and the name span the full width; then a
+   2-column grid — role + description left, button + location right. Grid ratios, gaps and the
+   bottom offset are reference measurements. */
+@media (max-width: 600px) {
+  .depth {
+    right: var(--gutter);
+    bottom: 92px;
+    width: auto;
+  }
+
+  .intro {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    column-gap: 20px;
+    align-items: start;
+  }
+
+  .hello {
+    grid-column: 1 / -1;
+    margin-bottom: 3px;
+  }
+
+  .name {
+    grid-column: 1 / -1;
+    margin-bottom: 13px;
+    line-height: 1.04;
+  }
+
+  .role {
+    grid-area: 3 / 1;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .role > span {
+    display: inline;
+  }
+
+  .description {
+    grid-area: 4 / 1;
+    max-width: none; /* phones: full column (DESIGN §5.6) */
+    margin-bottom: 0;
+  }
+
+  /* Button beside the description; compact padding and gap are reference measurements. The
+     label stays 12 px (DESIGN §5.4), not the reference's 10 px. */
+  .action {
+    grid-area: 4 / 2;
+    align-self: start;
+    margin-top: 2px;
+  }
+
+  .action > a {
+    justify-content: center;
+    gap: 11px;
+    min-height: var(--touch-target);
+    padding: 12px;
+  }
+
+  .location,
+  .locationSlot {
+    grid-area: 5 / 2;
+    margin-top: 10px;
+  }
+
+  .location {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 370px) {
+  .depth {
+    bottom: 78px;
+  }
+
+  .intro {
+    grid-template-columns: 1.15fr 1fr;
+    column-gap: 12px;
+  }
+
+  .action > a {
+    gap: 8px;
+    padding: 11px 8px;
+  }
+}

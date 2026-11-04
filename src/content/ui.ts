@@ -31,7 +31,7 @@ export const ui = {
     playShowreel: approved('PLAY SHOWREEL'), // FR-HE7
     showreelSecondary: draft('MOTION / VIDEO'),
     scrollToDiscover: approved('SCROLL TO DISCOVER'),
-    editionLabel: draft('SELECTED WORK'), // "SELECTED WORK / [start year]–2026"
+    editionLabel: draft('SELECTED WORK / {start}–2026'), // FR-HE7; 2026 fixed (owner decision)
   },
   work: {
     eyebrow: approved('01 / SELECTED WORK'), // FR-W1

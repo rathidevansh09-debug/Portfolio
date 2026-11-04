@@ -1,0 +1,187 @@
+/* DESIGN §8.1 side column, §10 responsive. Widths/offsets are DESIGN §8.1 values; gaps and
+   paddings DESIGN does not give are reference-stylesheet measurements. */
+.side {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 110px;
+  z-index: 3;
+  width: 17%;
+}
+
+.manifesto {
+  display: flex;
+  gap: 17px;
+  align-items: center;
+  margin-bottom: 45px;
+  font-size: var(--label-size);
+  line-height: 1.6;
+}
+
+/* 45 px ✳ ring (DESIGN §8.1). */
+.ring {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+  border: var(--border-hairline) solid var(--accent-border);
+  border-radius: var(--radius-round);
+  color: var(--accent);
+}
+
+.line {
+  display: block;
+}
+
+/* Stats sit on the stats veil so they stay readable over the portrait (DESIGN §4.6). */
+.stats {
+  margin-inline: -12px;
+  padding-inline: 12px;
+  background: var(--stats-veil);
+}
+
+.stat {
+  display: flex;
+  gap: 17px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.number {
+  min-width: 70px;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--stat-number-size);
+  letter-spacing: -0.03em; /* reference */
+  line-height: 1;
+}
+
+.suffix {
+  font-size: var(--stat-number-plus-size);
+}
+
+.label,
+.statLink {
+  color: var(--muted);
+  font-size: var(--meta-size);
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.statLink {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: var(--touch-target);
+  text-decoration: none;
+}
+
+.cv {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  min-height: var(--touch-target);
+  margin-top: 8px;
+  font-size: var(--label-size);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--dur-hover) var(--ease-signature);
+}
+
+.cv:hover {
+  color: var(--accent);
+}
+
+.cv:active,
+.statLink:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.accentIcon {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.pending {
+  margin-block: 8px;
+}
+
+/* Visually hidden, still announced. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .manifesto {
+    gap: 10px;
+  }
+
+  .stat {
+    gap: 8px;
+  }
+
+  .number {
+    min-width: 58px;
+  }
+}
+
+/* SM: manifesto without the ring; stats stacked number-over-label (DESIGN §10). */
+@media (max-width: 800px) {
+  .side {
+    width: 18%;
+  }
+
+  .ring {
+    display: none;
+  }
+
+  .stat {
+    flex-direction: column;
+    gap: 5px;
+    align-items: start;
+  }
+}
+
+/* Phone: narrow stats column over the portrait's right edge; manifesto hidden; CV link icon-only
+   (its label stays available to screen readers). Width 80 px per DESIGN §5.6 [TO VERIFY]. */
+@media (max-width: 600px) {
+  .side {
+    bottom: 285px;
+    width: 80px;
+  }
+
+  .manifesto {
+    display: none;
+  }
+
+  .stat {
+    gap: 3px;
+    padding: 7px 0;
+  }
+
+  .cv {
+    min-width: var(--touch-target); /* icon-only: keep a 44 px target (DESIGN §6.5) */
+  }
+
+  .cvLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 370px) {
+  .side {
+    bottom: 280px;
+    width: 63px;
+  }
+}

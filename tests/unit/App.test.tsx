@@ -26,12 +26,10 @@ describe('App: page shell (ARCHITECTURE §3.1; PRD §5)', () => {
   });
 
   it('sections in the fixed order with their anchors (Breakdown has none)', () => {
-    render(<App />);
-    const sections = [...within(screen.getByRole('main')).getAllByText(/PENDING/)].map(
-      (p) => p.closest('section') as HTMLElement,
-    );
-    expect(sections.map((s) => [s.dataset.placeholder, s.id])).toEqual([
-      ['Hero', 'home'],
+    const { container } = render(<App />);
+    const sections = [...container.querySelectorAll('main > section')] as HTMLElement[];
+    expect(sections.map((s) => [s.dataset.placeholder ?? 'real', s.id])).toEqual([
+      ['real', 'home'], // Hero (Phase 9)
       ['Selected Work', 'portfolio'],
       ['Impact & Milestones', 'impact'],
       ['Breakdown', ''],
@@ -39,6 +37,9 @@ describe('App: page shell (ARCHITECTURE §3.1; PRD §5)', () => {
       ['Journey', 'experience'],
       ['Contact', 'contact'],
     ]);
+    expect(within(sections[0] as HTMLElement).getByRole('heading', { level: 1 }).textContent).toBe(
+      'DEVANSH.',
+    );
   });
 
   it('nav labels come from ui.ts; no footer yet (Phase 14)', () => {

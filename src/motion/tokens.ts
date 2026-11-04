@@ -65,8 +65,12 @@ export const stagger = {
 // ── Hero (M-01, M-02a–c, M-04; DESIGN §9.2) ──────────────────────────────────────────
 export const hero = {
   word: { duration: 1.4 }, // M-01 clip wipe, signature easing [EXACT]
-  /** M-02a: easing [TO VERIFY] (signature or library default). Timing [EXACT]. */
-  portrait: { duration: 1.2, delay: 0.2 },
+  /**
+   * M-02a. Timing [EXACT]. Easing [TO VERIFY]: provisional 'easeOut' (Motion's default ease-out),
+   * from a reference sample on 4 Nov 2026 (≈ 32 % opacity at 20 % of the duration; the signature
+   * curve would give ≈ 60 %). Owner decision, Phase 9; confirmed side by side in Phase 16.
+   */
+  portrait: { duration: 1.2, delay: 0.2, ease: 'easeOut' },
   intro: { x: -35, duration: 0.9, delay: 0.35 }, // M-02b [EXACT]
   side: { x: 30, duration: 1.0, delay: 0.55 }, // M-02c [EXACT]
   /** Hero start gate: maximum wait for fonts + portrait (PRD §13). [RECOMMENDED] [TO VERIFY] */

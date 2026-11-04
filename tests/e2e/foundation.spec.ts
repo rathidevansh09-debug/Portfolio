@@ -146,8 +146,10 @@ test('keyboard focus shows a 2px accent ring offset 5px', async ({ page, browser
   const tabKey = browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
   await page.goto('/');
   // Phase 8: the real skip link is the probe. It must be the first focusable element (FR-G2).
-  await page.keyboard.press(tabKey);
   const skip = page.getByRole('link', { name: 'Skip to work' });
+  // Phase 9: wait for React's first render, so Tab is never pressed before the link exists.
+  await expect(skip).toBeVisible();
+  await page.keyboard.press(tabKey);
   await expect(skip).toBeFocused();
   const ring = await skip.evaluate((el) => {
     const s = getComputedStyle(el);

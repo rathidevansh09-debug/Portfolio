@@ -24,6 +24,7 @@ function launchReady() {
     profile: {
       ...content.profile,
       supportingLine: approved('S'),
+      portrait: image('Portrait'), // Phase 9: new profile field (owner decision 2)
       intro: 'Intro',
       location: 'City',
       availability: { text: approved('A'), shown: true },

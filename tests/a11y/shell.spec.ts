@@ -1,11 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { expectNoA11yViolations } from './helpers/axe.ts';
+import { waitForHeroEntrance } from './helpers/heroEntrance.ts';
 
 // Phase 8: axe (WCAG 2.2 A/AA) on the page shell in each state.
 
 test('desktop shell, then with motion off', async ({ page }, testInfo) => {
   await page.goto('/');
   await expect(page.getByRole('banner')).toBeVisible();
+  await waitForHeroEntrance(page); // Phase 9: measure the hero's final state, not mid-fade text
   await page.getByRole('link', { name: 'About' }).click();
   await expectNoA11yViolations(page);
   if (!testInfo.project.name.endsWith('-reduced-motion')) {
@@ -18,6 +20,7 @@ test('desktop shell, then with motion off', async ({ page }, testInfo) => {
 test('phone shell with the menu closed and open', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  await waitForHeroEntrance(page); // Phase 9: measure the hero's final state, not mid-fade text
   await expectNoA11yViolations(page);
   const button = page.getByRole('banner').locator('button[aria-controls]');
   await button.click();
