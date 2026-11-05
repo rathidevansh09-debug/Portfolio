@@ -49,10 +49,12 @@ export interface VideoPlayerLabels {
 export interface VideoPlayerProps {
   readonly video: Video;
   readonly labels: VideoPlayerLabels;
+  /** Stage proportion: 16 : 9 everywhere, or the pop-up box (16 : 9, phones 4 : 3 — DESIGN §8.10). */
+  readonly ratio?: 'wide' | 'popup';
   readonly className?: string;
 }
 
-export function VideoPlayer({ video, labels, className }: VideoPlayerProps) {
+export function VideoPlayer({ video, labels, ratio = 'wide', className }: VideoPlayerProps) {
   const [playerState, setState] = useState<VideoState>('poster');
   const [attempt, setAttempt] = useState(0);
   const local = isLocal(video) ? video : null;
@@ -80,7 +82,7 @@ export function VideoPlayer({ video, labels, className }: VideoPlayerProps) {
 
   return (
     <div className={[styles.player, className].filter(Boolean).join(' ')} data-state={state}>
-      <div className={styles.stage}>
+      <div className={styles.stage} data-ratio={ratio}>
         {state === 'poster' ? (
           <>
             <img

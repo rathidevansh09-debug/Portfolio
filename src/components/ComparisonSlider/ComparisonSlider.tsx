@@ -6,6 +6,8 @@
 // The control is a native range input stretched over the stage (invisible), so drag, arrow keys
 // and screen readers all work natively; the visible focus ring surrounds the whole stage.
 // Motion off (MO-5): rests at 50 % and stays draggable and keyboard-operable.
+// Static mode can also be set from outside (`value`): the pop-up's Wireframe / Final toggle moves
+// the divider to show one image fully; `onUserChange` reports the visitor's own drags and keys.
 // Drift (M-08 ±30 px): disabled until Phase 16 verifies which element drifts (owner decision).
 // Images are fitted without distortion (letterboxed when aspect ratios differ, §8.1).
 
@@ -32,10 +34,20 @@ export interface ComparisonSliderProps {
   readonly fallback: { readonly mark: string; readonly label: string };
   /** Stage proportion: Breakdown 1.75 : 1 (phones 1.5 : 1); pop-up 16 : 9 (phones 4 : 3). */
   readonly ratio?: 'breakdown' | 'popup';
+  /** Divider position (0–100) set from outside; undefined leaves it where it is. */
+  readonly value?: number;
+  /** Called when the visitor drags or uses the keys. */
+  readonly onUserChange?: (value: number) => void;
   readonly className?: string;
 }
 
 const percent = (v: number) => `${Math.round(v)}%`;
+
+function syncInput(input: HTMLInputElement | null, v: number) {
+  if (!input) return;
+  input.value = String(Math.round(v));
+  input.setAttribute('aria-valuetext', percent(v));
+}
 
 export function ComparisonSlider({
   pair,
@@ -45,6 +57,8 @@ export function ComparisonSlider({
   afterLabel,
   fallback,
   ratio = 'breakdown',
+  value,
+  onUserChange,
   className,
 }: ComparisonSliderProps) {
   const { motionOn } = useMotionPreference();
@@ -60,11 +74,7 @@ export function ComparisonSlider({
 
   const setCut = (v: number) => {
     cut.set(v);
-    const input = inputRef.current;
-    if (input) {
-      input.value = String(Math.round(v));
-      input.setAttribute('aria-valuetext', percent(v));
-    }
+    syncInput(inputRef.current, v);
   };
 
   useMotionValueEvent(progress, 'change', (p) => {
@@ -76,20 +86,24 @@ export function ComparisonSlider({
   // scroll mode starts from the current scroll position; static mode and motion off rest at 50 %.
   useEffect(() => {
     if (userControlled.current) return;
-    const input = inputRef.current;
-    const value = followsScroll
+    const start = followsScroll
       ? comparison.start - progress.get() * (comparison.start - comparison.end)
       : comparison.rest;
-    cut.set(value);
-    if (input) {
-      input.value = String(Math.round(value));
-      input.setAttribute('aria-valuetext', percent(value));
-    }
+    cut.set(start);
+    syncInput(inputRef.current, start);
   }, [followsScroll, progress, cut]);
 
-  const takeOver = (value: number) => {
+  // A position set from outside (the pop-up toggle) applies whenever it changes.
+  useEffect(() => {
+    if (value === undefined) return;
+    cut.set(value);
+    syncInput(inputRef.current, value);
+  }, [value, cut]);
+
+  const takeOver = (v: number) => {
     userControlled.current = true;
-    setCut(value);
+    setCut(v);
+    onUserChange?.(v);
   };
 
   return (

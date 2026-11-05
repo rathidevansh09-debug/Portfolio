@@ -1,14 +1,52 @@
-/* DESIGN §7.4 project card (static until Phase 11): media frame 1.65 : 1 (phones 1.5 : 1, first
-   card 1.9 : 1), surface-card, 1 px line; image oversized 12 px top/bottom for drift (M-06) at
-   55 % saturation (90 % on touch screens); 9 px inner frame; type chip top-left at 15 px; caption
-   row min 84 px with a line bottom border. No hover change and default cursor (owner decision). */
+/* DESIGN §7.4 project card: media frame 1.65 : 1 (phones 1.5 : 1, first card 1.9 : 1),
+   surface-card, 1 px line; image oversized 12 px top/bottom for drift (M-06) at 55 % saturation
+   (90 % on touch screens); 9 px inner frame; type chip top-left at 15 px; centred 52 px hover
+   circle; caption row min 84 px with a line bottom border and a small diagonal arrow.
+   M-07a values come from the motion CSS variables (src/motion/tokens.ts). */
 .item {
   min-width: 0;
   list-style: none;
 }
 
 .card {
-  cursor: default;
+  position: relative;
+}
+
+/* The one control: the title button's click area covers the whole card (stretched link). It is a
+   block so a long title still ends in an ellipsis on one line (DESIGN §10); the stretched area is
+   positioned against the card, so this clipping does not cut it. */
+.open {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  white-space: nowrap;
+}
+
+.open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+/* The focus ring surrounds the whole card instead of the title text (DESIGN §6.5). */
+.open:focus-visible {
+  outline: none;
+}
+
+.card:has(.open:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--accent);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.card:has(.open:active) {
+  filter: brightness(var(--pressed-brightness));
 }
 
 .media {
@@ -23,11 +61,78 @@
   position: absolute;
   inset: -12px 0;
   filter: saturate(var(--card-saturation-rest));
+  transition: filter var(--dur-image-fade) var(--ease-signature);
 }
 
+.image {
+  transition: transform var(--dur-zoom) var(--ease-signature);
+}
+
+/* Hover circle: 52 px, starts slightly below centre (provisional offset, [TO VERIFY]). */
+.circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: var(--border-hairline) solid var(--hover-circle-ring);
+  border-radius: var(--radius-round);
+  background: var(--hover-circle-bg);
+  color: var(--ink);
+  opacity: 0;
+  transform: translate(-50%, calc(-50% + var(--card-hover-circle-offset)));
+  transition:
+    opacity var(--dur-hover-icon-fade) var(--ease-signature),
+    transform var(--dur-hover-circle-move) var(--ease-signature);
+}
+
+.arrow {
+  flex-shrink: 0;
+  color: var(--muted);
+  transition:
+    transform var(--dur-hover-med) var(--ease-signature),
+    color var(--dur-hover-med) var(--ease-signature);
+}
+
+/* M-07a — mouse only (MO-6). */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .picture {
+    filter: saturate(1);
+  }
+
+  .card:hover .image {
+    transform: scale(var(--card-hover-zoom));
+  }
+
+  .card:hover .circle {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .card:hover .arrow {
+    color: var(--accent);
+    transform: translate(var(--card-arrow-shift), calc(-1 * var(--card-arrow-shift)));
+  }
+}
+
+/* Keyboard focus shows the circle too [OBSERVED reference]. */
+.card:has(.open:focus-visible) .circle {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* Touch screens: the circle is always visible and images sit at 90 % (DESIGN §9.3, MO-6). */
 @media (hover: none) {
   .picture {
     filter: saturate(var(--card-saturation-touch));
+  }
+
+  .circle {
+    opacity: 1;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -145,5 +250,18 @@
 
   .item[data-first] .title {
     font-size: var(--card-title-size-featured);
+  }
+
+  /* Phones: hover icons always visible, 34 px (first card 44 px) — DESIGN §10; reference sizes. */
+  .circle {
+    width: 34px;
+    height: 34px;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .item[data-first] .circle {
+    width: 44px;
+    height: 44px;
   }
 }

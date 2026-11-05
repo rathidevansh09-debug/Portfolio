@@ -1,0 +1,39 @@
+/* DESIGN §8.10 facts strip: 4 columns (XS 2), 20 px padding, `line` dividers above, below and
+   between rows; labels `micro` muted uppercase, values `title-sm`. The divider above is the
+   summary row's bottom border. */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden; /* hides the first row's top divider (the summary border is above it) */
+  margin: 0;
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.fact {
+  display: grid;
+  align-content: start;
+  gap: var(--space-8);
+  margin-top: calc(-1 * var(--border-hairline));
+  padding: var(--space-20);
+  border-top: var(--border-hairline) solid var(--line);
+}
+
+.label {
+  color: var(--muted);
+  font-size: var(--micro-size);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.value {
+  margin: 0;
+  font-size: var(--title-sm-size);
+  font-weight: var(--title-sm-weight);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

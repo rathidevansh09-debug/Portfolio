@@ -4,6 +4,7 @@ import { content } from '../../../src/content/index.ts';
 import { PENDING_LABEL } from '../../../src/content/pending.ts';
 import type { Brand, FilterKey, Project } from '../../../src/content/schema.ts';
 import { approved } from '../../../src/content/schema.ts';
+import { ModalProvider, useModal } from '../../../src/modal/ModalProvider.tsx';
 import { MotionPreferenceProvider } from '../../../src/motion/MotionPreference.tsx';
 import {
   SelectedWork,
@@ -74,21 +75,34 @@ const brands: Brand[] = [
   { name: 'Hidden logo', logo: image('Hidden logo'), permissionConfirmed: false },
 ];
 
+/** Shows which item the pop-up state holds (the pop-up itself is tested in tests/unit/modal). */
+function OpenedProbe() {
+  const { item, opener } = useModal();
+  return (
+    <output data-testid="opened" data-opener={opener?.textContent ?? ''}>
+      {item?.kind === 'project' ? item.project.slug : ''}
+    </output>
+  );
+}
+
 const renderWork = (props: Partial<Parameters<typeof SelectedWork>[0]> = {}) =>
   render(
     <MotionPreferenceProvider>
-      <SelectedWork
-        id="portfolio"
-        projects={[...projects, unpermitted]}
-        index={index(
-          ['p3', 'p1', 'p2'],
-          projects.map((p) => p.slug),
-        )}
-        filters={content.filters}
-        brands={brands}
-        labels={labels}
-        {...props}
-      />
+      <ModalProvider>
+        <OpenedProbe />
+        <SelectedWork
+          id="portfolio"
+          projects={[...projects, unpermitted]}
+          index={index(
+            ['p3', 'p1', 'p2'],
+            projects.map((p) => p.slug),
+          )}
+          filters={content.filters}
+          brands={brands}
+          labels={labels}
+          {...props}
+        />
+      </ModalProvider>
     </MotionPreferenceProvider>,
   );
 
@@ -214,13 +228,29 @@ describe('Selected Work (FR-W1–W7; owner decisions, Phase 10)', () => {
     expect(live.textContent?.trim()).toBe('10 projects shown'); // re-announced (content changes)
   });
 
-  it('cards are static until Phase 11: no button, link or focus stop; category only', () => {
+  it('each card is one control: a button named by the title, inside the H3 (Phase 11)', async () => {
     const { container } = renderWork();
     const grid = container.querySelector('ul') as HTMLElement;
-    expect(grid.querySelectorAll('button, a, [tabindex]')).toHaveLength(0);
-    const first = within(grid).getAllByRole('listitem')[0] as HTMLElement;
+    const cards = within(grid).getAllByRole('listitem');
+    for (const card of cards) {
+      // Exactly one focus stop per card, no links, no nested controls.
+      expect(card.querySelectorAll('button, a, input, [tabindex]')).toHaveLength(1);
+      const button = within(card).getByRole('button');
+      expect(button.closest('h3')).not.toBeNull();
+      expect(button.querySelector('button, a')).toBeNull();
+    }
+    const first = cards[0] as HTMLElement;
+    expect(within(first).getByRole('button').textContent).toBe('Test project 3');
     expect(first.textContent).toBe('TEST TYPE01Test project 3Test category');
-    expect(first.querySelectorAll('svg')).toHaveLength(0); // no hover circle, no caption arrow
+    // M-07a hover circle and caption arrow are decorative icons.
+    const icons = [...first.querySelectorAll('svg')];
+    expect(icons).toHaveLength(2);
+    for (const icon of icons)
+      expect(icon.closest('[aria-hidden="true"], svg[aria-hidden]')).not.toBeNull();
+
+    fireEvent.click(within(first).getByRole('button'));
+    await waitFor(() => expect(screen.getByTestId('opened').textContent).toBe('p3'));
+    expect(screen.getByTestId('opened').dataset.opener).toBe('Test project 3');
   });
 
   it('only permitted client logos reach the Brands strip', () => {

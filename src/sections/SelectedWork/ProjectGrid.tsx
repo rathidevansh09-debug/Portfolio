@@ -15,6 +15,7 @@ export interface ProjectGridProps {
   readonly items: readonly Project[];
   readonly chipLabels: TypeChipLabels;
   readonly fallback: { readonly mark: string; readonly label: string };
+  readonly onOpen: (project: Project, opener: HTMLElement) => void;
 }
 
 /** Column of a card in the current layout, for the M-05 column stagger. */
@@ -23,7 +24,7 @@ function columnOf(index: number, phone: boolean): number {
   return index === 0 ? 0 : (index - 1) % 2;
 }
 
-export function ProjectGrid({ items, chipLabels, fallback }: ProjectGridProps) {
+export function ProjectGrid({ items, chipLabels, fallback, onOpen }: ProjectGridProps) {
   const phone = useMediaQuery(PHONE_QUERY);
   return (
     // role="list": list styling is removed, which drops list semantics in Safari.
@@ -37,6 +38,7 @@ export function ProjectGrid({ items, chipLabels, fallback }: ProjectGridProps) {
             column={columnOf(index, phone)}
             chipLabels={chipLabels}
             fallback={fallback}
+            onOpen={onOpen}
           />
         ))}
       </AnimatePresence>

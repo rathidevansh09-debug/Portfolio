@@ -11,11 +11,12 @@
 // Entrance and depth live on separate elements so their transforms never collide.
 // Motion off (MO-5): everything renders in its final position; no depth.
 //
-// "Play showreel" is visual only until the pop-up exists (owner decision, Phase 9); Phase 11
-// connects it using lib/showreel.ts (A-7).
+// "Play showreel" (FR-HE7, FR-HE8, A-7; owner decision, Phase 11) is a button only when it has
+// something to open — a supplied showreel, or the published first featured project (PNG
+// Jewellers) — computed by lib/showreel.ts. Otherwise it stays a visual-only label.
 
 import { motion } from 'motion/react';
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { PlayCircleGlyph } from '../../components/actions/PlayCircle/PlayCircle.tsx';
 import { Icon } from '../../components/icons/Icon.tsx';
 import { MediaImage } from '../../components/media/MediaImage/MediaImage.tsx';
@@ -23,6 +24,9 @@ import { PendingMarker } from '../../components/PendingMarker/PendingMarker.tsx'
 import { isPending } from '../../content/pending.ts';
 import type { ProfileContent } from '../../content/schema.ts';
 import { fillTemplate } from '../../lib/format.ts';
+import type { ShowreelTarget } from '../../lib/showreel.ts';
+import { prefetchProjectModal, warmProjectModal } from '../../modal/loadProjectModal.ts';
+import { useModal } from '../../modal/ModalProvider.tsx';
 import { useMotionPreference } from '../../motion/MotionPreference.tsx';
 import { useScrollLinked } from '../../motion/hooks/useScrollLinked.ts';
 import { ease, hero } from '../../motion/tokens.ts';
@@ -52,17 +56,27 @@ export interface HeroProps {
   readonly labels: HeroLabels;
   /** Selected Work anchor for "See my work". */
   readonly workHref: string;
+  /** What "Play showreel" opens; null keeps it visual only. */
+  readonly showreel?: ShowreelTarget | null;
 }
 
 /** The hero's scroll-out: progress 0 at the top of the page, 1 when the hero has left. */
 const SCROLL_OUT = ['start start', 'end start'] as const;
 
-export function Hero({ id, profile, labels, workHref }: HeroProps) {
+export function Hero({ id, profile, labels, workHref, showreel = null }: HeroProps) {
   const ref = useRef<HTMLElement>(null);
   const { motionOn } = useMotionPreference();
   const portrait = profile.portrait;
   const started = useHeroStartGate(ref, !isPending(portrait), motionOn);
   const enter = (to: Record<string, number | string>) => (started ? to : undefined);
+  const reelContent = (
+    <>
+      <PlayCircleGlyph className={styles.reelCircle} />
+      <span>{labels.playShowreel}</span>{' '}
+      {/* The space keeps the two labels apart in the button's accessible name. */}
+      <span className={styles.reelSecondary}>{labels.showreelSecondary}</span>
+    </>
+  );
 
   const offset = [...SCROLL_OUT];
   const wordY = useScrollLinked(ref, { offset, output: [0, hero.depth.wordY], offValue: 0 });
@@ -167,12 +181,13 @@ export function Hero({ id, profile, labels, workHref }: HeroProps) {
       />
 
       <div className={styles.bottom}>
-        {/* Visual only until Phase 11 connects the pop-up (owner decision). */}
-        <p className={styles.reel}>
-          <PlayCircleGlyph className={styles.reelCircle} />
-          <span>{labels.playShowreel}</span>
-          <span className={styles.reelSecondary}>{labels.showreelSecondary}</span>
-        </p>
+        {showreel ? (
+          <ShowreelButton target={showreel} className={styles.reel}>
+            {reelContent}
+          </ShowreelButton>
+        ) : (
+          <p className={styles.reel}>{reelContent}</p>
+        )}
         <p className={styles.scroll}>
           {labels.scrollToDiscover}
           <Icon name="arrow-down" className={styles.scrollArrow} />
@@ -186,5 +201,32 @@ export function Hero({ id, profile, labels, workHref }: HeroProps) {
         )}
       </div>
     </section>
+  );
+}
+
+function ShowreelButton({
+  target,
+  className,
+  children,
+}: {
+  readonly target: ShowreelTarget;
+  readonly className: string;
+  readonly children: ReactNode;
+}) {
+  const { openModal } = useModal();
+  return (
+    <button
+      type="button"
+      className={className}
+      onPointerEnter={warmProjectModal}
+      onPointerDown={warmProjectModal}
+      onFocus={warmProjectModal}
+      onClick={(e) => {
+        const opener = e.currentTarget;
+        void prefetchProjectModal().then(() => openModal(target, opener));
+      }}
+    >
+      {children}
+    </button>
   );
 }

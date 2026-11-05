@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ComparisonSlider } from '../../../src/components/ComparisonSlider/ComparisonSlider.tsx';
 import type { BeforeAfter } from '../../../src/content/schema.ts';
 import { MotionPreferenceProvider } from '../../../src/motion/MotionPreference.tsx';
@@ -70,5 +70,27 @@ describe('ComparisonSlider (M-08; ARCHITECTURE §10)', () => {
     const boxes = container.querySelectorAll('[data-fit]');
     expect(boxes).toHaveLength(2);
     boxes.forEach((b) => expect((b as HTMLElement).dataset.fit).toBe('contain'));
+  });
+
+  it('static mode follows a position set from outside; visitor changes are reported', () => {
+    const onUserChange = vi.fn();
+    const props = { pair, mode: 'static' as const, label: 'Compare test', fallback, onUserChange };
+    const { rerender } = render(
+      <MotionPreferenceProvider>
+        <ComparisonSlider {...props} />
+      </MotionPreferenceProvider>,
+    );
+    const range = screen.getByRole('slider', { name: 'Compare test' }) as HTMLInputElement;
+    expect(range.value).toBe('50');
+    rerender(
+      <MotionPreferenceProvider>
+        <ComparisonSlider {...props} value={100} />
+      </MotionPreferenceProvider>,
+    );
+    expect(range.value).toBe('100');
+    expect(range.getAttribute('aria-valuetext')).toBe('100%');
+    expect(onUserChange).not.toHaveBeenCalled();
+    fireEvent.input(range, { target: { value: '40' } });
+    expect(onUserChange).toHaveBeenCalledWith(40);
   });
 });

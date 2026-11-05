@@ -134,6 +134,15 @@ export interface Link {
   readonly label: Copy;
 }
 
+/**
+ * A project's external link (FR-M3). Its own label is optional: without one, the pop-up button
+ * uses the shared wording ui.popup.visitLiveSite (owner decision, Phase 11).
+ */
+export interface ProjectLink {
+  readonly href: string;
+  readonly label?: Copy;
+}
+
 // ── Filters (D-03) ────────────────────────────────────────────────────────────────────
 /** The six approved filter tags. "All" is not a tag. Shopify is never a filter (D-03). */
 export const FILTER_KEYS = [
@@ -225,7 +234,7 @@ export interface Project {
   readonly summary: OrPending<string>;
   readonly facts: OrPending<Facts>;
   /** null = the project has no external link. */
-  readonly externalLink: OrPending<Link | null>;
+  readonly externalLink: OrPending<ProjectLink | null>;
   readonly sections: OrPending<CaseStudySections>;
   /** Published only when the owner confirms permission to show it (PRD A-10). */
   readonly permissionConfirmed: OrPending<boolean>;

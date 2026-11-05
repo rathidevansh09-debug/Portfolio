@@ -116,10 +116,12 @@ label {
  * Our own texture: SVG fractal noise rendered white, tiled at a small size and shown at 3.5 %.
  * Fixed above page content, ignores pointer input, no blend modes (ARCHITECTURE R-4).
  * Pseudo-element content is not exposed to screen readers.
- * Phase 11: a native modal <dialog> renders in the browser's top layer, above this grain, so the
- * grain will not cover the pop-up backdrop as DESIGN §6.4 orders. Resolve there; no change now.
+ * The open pop-up (a native modal <dialog>) renders in the browser's top layer, above body::after,
+ * so the same grain is repeated on the dialog to keep it above the pop-up backdrop (DESIGN §6.4;
+ * owner decision, Phase 11). The reading-progress bar stays under the backdrop while it is open.
  */
-body::after {
+body::after,
+:modal::after {
   content: '';
   position: fixed;
   inset: 0;

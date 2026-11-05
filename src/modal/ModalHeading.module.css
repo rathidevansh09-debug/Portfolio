@@ -1,0 +1,27 @@
+/* DESIGN §8.10 heading bar: padding 12 × 20 px, `line` bottom border, `panel` background, sticky at
+   the top of the pop-up's scroll area (D-14). */
+.heading {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding: var(--space-12) var(--space-20);
+  border-bottom: var(--border-hairline) solid var(--line);
+  background: var(--panel);
+}
+
+.eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+  min-width: 0;
+  color: var(--accent);
+  font-size: var(--eyebrow-size);
+  font-weight: var(--eyebrow-weight);
+  letter-spacing: var(--eyebrow-tracking);
+  text-transform: uppercase;
+}

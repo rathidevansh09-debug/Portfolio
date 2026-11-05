@@ -1,0 +1,68 @@
+/* DESIGN §8.10 pop-up media: 16 : 9 (XS 4 : 3) on surface-sunken; images whole, max 60 % of the
+   screen height. Toggle row: reference measurements; selected = accent-fill. */
+.still {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 60dvh;
+  width: 100%;
+  background: var(--surface-sunken);
+}
+
+/* The restricted-video note under an embed sits inside the panel padding (reference). */
+.video > p {
+  padding: 0 var(--space-24) 22px; /* reference */
+}
+
+.toggles {
+  display: flex;
+  gap: 8px; /* reference */
+  padding: 12px 20px; /* reference */
+  border-top: var(--border-hairline) solid var(--line);
+  border-bottom: var(--border-hairline) solid var(--line);
+}
+
+.toggle {
+  min-height: var(--touch-target);
+  padding: 10px 16px; /* reference */
+  border: var(--border-hairline) solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: var(--label-size);
+  transition:
+    background-color var(--dur-hover) var(--ease-signature),
+    border-color var(--dur-hover) var(--ease-signature),
+    filter var(--dur-hover) var(--ease-signature);
+}
+
+.toggle:hover {
+  border-color: var(--accent);
+}
+
+.toggle:active {
+  filter: brightness(var(--pressed-brightness));
+}
+
+.toggle[aria-pressed='true'] {
+  border-color: var(--accent-fill);
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+@media (max-width: 600px) {
+  .still {
+    aspect-ratio: 4 / 3;
+  }
+
+  .toggles {
+    gap: 6px; /* reference */
+    padding: 10px 12px;
+  }
+
+  .toggle {
+    flex: 1 1 0%;
+  }
+
+  .video > p {
+    padding: 0 18px 18px; /* reference */
+  }
+}

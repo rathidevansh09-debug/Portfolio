@@ -156,6 +156,9 @@ export const ui = {
     toggleFinal: approved('Final'),
     openDocument: approved('Open document'), // A-6
     close: pending('Accessible label for the pop-up close button'),
+    // Gallery buttons (owner decision, Phase 11): no wording in the approved documents.
+    galleryPrevious: pending('Accessible label for the gallery previous-image button'),
+    galleryNext: pending('Accessible label for the gallery next-image button'),
   },
   states: {
     imageUnavailable: approved('Preview unavailable'), // PRD §13

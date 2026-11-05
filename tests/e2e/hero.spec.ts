@@ -6,7 +6,8 @@ import { VERIFICATION_WIDTHS, anchorOffset, viewportForWidth } from './helpers/v
 // Phase 9 verification (built site unless noted): entrance timeline (M-01, M-02a–c; DESIGN §9.2),
 // start gate (PRD §13), motion off (MO-5), scroll depth (M-04), name fit (DESIGN §5.7), hero heights
 // per breakpoint, PENDING content hidden in production (owner decision 3), "See my work →",
-// showreel visual only (owner decision 6). Stats layouts 0–3 use the dev-server harness.
+// showreel visual only while it has nothing to open (Phase 11; production has none yet).
+// Stats layouts 0–3 use the dev-server harness.
 
 const HARNESS = 'http://localhost:5180/tests/e2e/harness/hero.html';
 const isReduced = (name: string) => name.endsWith('-reduced-motion');
@@ -290,7 +291,7 @@ test('production build: PENDING hero content renders nothing (owner decision 3)'
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('DEVANSH.');
 });
 
-test('"See my work →" goes to Selected Work; "Play showreel" is not yet a control', async ({
+test('"See my work →" goes to Selected Work; "Play showreel" has nothing to open yet (no control)', async ({
   page,
 }) => {
   await page.goto('/');

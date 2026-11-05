@@ -9,7 +9,7 @@
 //     projects without permission are simply missing (no substitute).
 //   - Production with no published project: the heading row only — no toggle, toolbar, grid or
 //     Brands block. Development shows PENDING projects for review.
-//   - Cards are static until Phase 11 (see ProjectCard).
+//   - Each card is one control that opens the project pop-up (Phase 11; see ProjectCard).
 
 import { useId, useRef, useState, type ReactNode } from 'react';
 import { TextLink } from '../../components/actions/TextLink/TextLink.tsx';
@@ -27,6 +27,8 @@ import {
 } from '../../lib/filtering.ts';
 import { fillTemplate } from '../../lib/format.ts';
 import { currentContentMode, publishedBrands, publishedProjects } from '../../lib/selectors.ts';
+import { prefetchProjectModal } from '../../modal/loadProjectModal.ts';
+import { useModal } from '../../modal/ModalProvider.tsx';
 import { BrandsStrip, type BrandsStripLabels } from './BrandsStrip.tsx';
 import { EmptyState } from './EmptyState.tsx';
 import { FilterTabs } from './FilterTabs.tsx';
@@ -69,6 +71,7 @@ export interface SelectedWorkProps {
 export function SelectedWork({ id, projects, index, filters, brands, labels }: SelectedWorkProps) {
   const headingId = useId();
   const searchRef = useRef<HTMLInputElement>(null);
+  const { openModal } = useModal();
   const [view, setView] = useState<WorkMode>('selected');
   const [filter, setFilter] = useState<FilterChoice>('all');
   const [query, setQuery] = useState('');
@@ -161,6 +164,10 @@ export function SelectedWork({ id, projects, index, filters, brands, labels }: S
           items={result.items}
           chipLabels={labels.chips}
           fallback={labels.imageFallback}
+          onOpen={(project, opener) => {
+            // The pop-up's code is usually prefetched already (idle, hover, focus, press).
+            void prefetchProjectModal().then(() => openModal({ kind: 'project', project }, opener));
+          }}
         />
       ) : (
         <EmptyState

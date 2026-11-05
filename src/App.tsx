@@ -1,8 +1,9 @@
 // Page composition in the fixed section order (PRD §5; ARCHITECTURE §3.1).
 // Providers: motion preference (MO-5) → pop-up state. The film grain is the body::after layer in
 // base.css (owner decision, Phase 8: no separate Grain component). Footer: Phase 14.
-// The pop-up itself (ProjectModal) is rendered here from Phase 11.
+// The pop-up (ProjectModal) is a separate code chunk, rendered only while open (PopUp below).
 
+import { Suspense, useEffect } from 'react';
 import { content } from './content/index.ts';
 import { Header, type NavItem } from './layout/Header/Header.tsx';
 import { ReadingProgress } from './layout/ReadingProgress/ReadingProgress.tsx';
@@ -12,7 +13,11 @@ import { SkipLink } from './layout/SkipLink/SkipLink.tsx';
 import { Hero, type HeroLabels } from './sections/Hero/Hero.tsx';
 import { SelectedWork, type SelectedWorkLabels } from './sections/SelectedWork/SelectedWork.tsx';
 import { copyText } from './lib/copy.ts';
-import { ModalProvider } from './modal/ModalProvider.tsx';
+import { currentContentMode, publishedProjects } from './lib/selectors.ts';
+import { showreelTarget } from './lib/showreel.ts';
+import { LazyProjectModal, prefetchProjectModalWhenIdle } from './modal/loadProjectModal.ts';
+import { ModalProvider, useModal } from './modal/ModalProvider.tsx';
+import type { ProjectModalLabels } from './modal/ProjectModal.tsx';
 import { MotionPreferenceProvider } from './motion/MotionPreference.tsx';
 
 const { ui, profile, site, projects, projectIndex, filters, brands } = content;
@@ -34,6 +39,17 @@ const MOTION_LABELS = {
 };
 const MENU_LABELS = { open: copyText(ui.nav.menuButton), close: copyText(ui.nav.closeMenu) };
 const SECTION_FALLBACK = copyText(ui.states.sectionUnavailable);
+// A-7: the showreel, or the first featured project when it may be shown (owner decision, Phase 11).
+const SHOWREEL = showreelTarget(
+  profile.showreel,
+  publishedProjects(projects, currentContentMode()),
+  projectIndex,
+);
+
+const IMAGE_FALLBACK = {
+  mark: site.favicon.monogram,
+  label: copyText(ui.states.imageUnavailable),
+};
 const HERO_LABELS: HeroLabels = {
   supportingLine: copyText(profile.supportingLine),
   hello: copyText(profile.helloLine),
@@ -45,13 +61,9 @@ const HERO_LABELS: HeroLabels = {
   showreelSecondary: copyText(ui.hero.showreelSecondary),
   scrollToDiscover: copyText(ui.hero.scrollToDiscover),
   editionTemplate: copyText(ui.hero.editionLabel),
-  imageFallback: { mark: site.favicon.monogram, label: copyText(ui.states.imageUnavailable) },
+  imageFallback: IMAGE_FALLBACK,
 };
 
-const IMAGE_FALLBACK = {
-  mark: site.favicon.monogram,
-  label: copyText(ui.states.imageUnavailable),
-};
 const WORK_LABELS: SelectedWorkLabels = {
   eyebrow: copyText(ui.work.eyebrow),
   headline: copyText(ui.work.headline),
@@ -86,6 +98,62 @@ const WORK_LABELS: SelectedWorkLabels = {
   },
 };
 
+const MODAL_LABELS: ProjectModalLabels = {
+  close: copyText(ui.popup.close),
+  sections: {
+    overview: copyText(ui.popup.overview),
+    problem: copyText(ui.popup.problem),
+    research: copyText(ui.popup.research),
+    processAndDecisions: copyText(ui.popup.processAndDecisions),
+    finalDesigns: copyText(ui.popup.finalDesigns),
+    outcomes: copyText(ui.popup.outcomes),
+  },
+  facts: {
+    client: copyText(ui.popup.factClient),
+    year: copyText(ui.popup.factYear),
+    myRole: copyText(ui.popup.factMyRole),
+    team: copyText(ui.popup.factTeam),
+    platform: copyText(ui.popup.factPlatform),
+    tools: copyText(ui.popup.factTools),
+  },
+  showreelEyebrow: copyText(ui.hero.showreelSecondary),
+  openDocument: copyText(ui.popup.openDocument),
+  visitLiveSite: copyText(ui.popup.visitLiveSite),
+  media: {
+    sliderLabel: copyText(ui.breakdown.sliderLabel),
+    toggleWireframe: copyText(ui.popup.toggleWireframe),
+    toggleFinal: copyText(ui.popup.toggleFinal),
+    video: {
+      play: copyText(ui.states.playVideo),
+      loading: copyText(ui.states.loading),
+      error: copyText(ui.states.videoError),
+      tryAgain: copyText(ui.states.tryAgain),
+      openOriginal: copyText(ui.states.openOriginal),
+      restrictedNote: copyText(ui.states.restrictedNote),
+    },
+    imageFallback: IMAGE_FALLBACK,
+  },
+  gallery: {
+    previous: copyText(ui.popup.galleryPrevious),
+    next: copyText(ui.popup.galleryNext),
+    imageFallback: IMAGE_FALLBACK,
+  },
+  unavailable: SECTION_FALLBACK,
+};
+
+/** The pop-up host: prefetches the pop-up's code when idle; renders it only while an item is open. */
+function PopUp() {
+  const { item, opener, closeModal } = useModal();
+  useEffect(() => prefetchProjectModalWhenIdle(), []);
+  if (!item) return null;
+  return (
+    // Openers wait for the code before opening, so there is no loading state to show.
+    <Suspense fallback={null}>
+      <LazyProjectModal item={item} opener={opener} onClosed={closeModal} labels={MODAL_LABELS} />
+    </Suspense>
+  );
+}
+
 // TEMPORARY development placeholders (owner decision, Phase 8), replaced by each section's phase.
 const SECTIONS: readonly { id?: string; name: string; phase: number }[] = [
   { id: 'impact', name: 'Impact & Milestones', phase: 12 },
@@ -111,7 +179,13 @@ export default function App() {
         />
         <main>
           <SectionBoundary id={HOME.id} fallback={SECTION_FALLBACK}>
-            <Hero id={HOME.id} profile={profile} labels={HERO_LABELS} workHref="#portfolio" />
+            <Hero
+              id={HOME.id}
+              profile={profile}
+              labels={HERO_LABELS}
+              workHref="#portfolio"
+              showreel={SHOWREEL}
+            />
           </SectionBoundary>
           <SectionBoundary id="portfolio" fallback={SECTION_FALLBACK}>
             <SelectedWork
@@ -129,6 +203,7 @@ export default function App() {
             </SectionBoundary>
           ))}
         </main>
+        <PopUp />
       </ModalProvider>
     </MotionPreferenceProvider>
   );

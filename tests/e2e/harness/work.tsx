@@ -1,6 +1,7 @@
 // Selected Work + Brands harness: the real SelectedWork section with FICTIONAL "TEST" projects and
 // generated "TEST LOGO" SVGs (owner decision 3, Phase 10). Test fixture only: never site content,
 // never in the production build. Query: ?brands=N limits the logos (strip with few logos).
+// Cards open the pop-up state (ModalProvider); the pop-up itself is exercised in modal.tsx.
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -19,6 +20,7 @@ import type {
 } from '../../../src/content/schema.ts';
 import { approved } from '../../../src/content/schema.ts';
 import { copyText } from '../../../src/lib/copy.ts';
+import { ModalProvider } from '../../../src/modal/ModalProvider.tsx';
 import { MotionPreferenceProvider } from '../../../src/motion/MotionPreference.tsx';
 import { initMotion } from '../../../src/motion/preference.ts';
 import { SelectedWork } from '../../../src/sections/SelectedWork/SelectedWork.tsx';
@@ -106,47 +108,49 @@ initMotion();
 createRoot(root).render(
   <StrictMode>
     <MotionPreferenceProvider>
-      <div style={{ height: '40vh' }} />
-      <SelectedWork
-        id="portfolio"
-        projects={projects}
-        index={index}
-        filters={content.filters}
-        brands={brands}
-        labels={{
-          eyebrow: copyText(ui.work.eyebrow),
-          headline: copyText(ui.work.headline),
-          allWork: copyText(ui.work.allWorkToggle),
-          selectedWork: copyText(ui.work.selectedWorkToggle),
-          filterAll: copyText(ui.work.filterAll),
-          filtersLabel: 'Test filter group',
-          search: copyText(ui.work.search),
-          showMore: copyText(ui.work.showMore),
-          count: copyText(ui.work.count),
-          empty: copyText(ui.work.empty),
-          resetSearch: copyText(ui.work.resetSearch),
-          announcement: 'TEST {count} projects',
-          chips: {
-            'case-study': testChip,
-            website: testChip,
-            'video-motion': testChip,
-            'before-after': testChip,
-          },
-          imageFallback: fallback,
-          brands: {
-            headingLine1: copyText(ui.brands.headingLine1),
-            headingLine2: copyText(ui.brands.headingLine2),
-            seeAll: copyText(ui.brands.seeAll),
-            showStrip: 'TEST SHOW STRIP',
-            autoScroll: copyText(ui.brands.autoScroll),
-            previous: 'Test previous',
-            next: 'Test next',
-            region: 'Test logo strip',
+      <ModalProvider>
+        <div style={{ height: '40vh' }} />
+        <SelectedWork
+          id="portfolio"
+          projects={projects}
+          index={index}
+          filters={content.filters}
+          brands={brands}
+          labels={{
+            eyebrow: copyText(ui.work.eyebrow),
+            headline: copyText(ui.work.headline),
+            allWork: copyText(ui.work.allWorkToggle),
+            selectedWork: copyText(ui.work.selectedWorkToggle),
+            filterAll: copyText(ui.work.filterAll),
+            filtersLabel: 'Test filter group',
+            search: copyText(ui.work.search),
+            showMore: copyText(ui.work.showMore),
+            count: copyText(ui.work.count),
+            empty: copyText(ui.work.empty),
+            resetSearch: copyText(ui.work.resetSearch),
+            announcement: 'TEST {count} projects',
+            chips: {
+              'case-study': testChip,
+              website: testChip,
+              'video-motion': testChip,
+              'before-after': testChip,
+            },
             imageFallback: fallback,
-          },
-        }}
-      />
-      <div style={{ height: '120vh' }} />
+            brands: {
+              headingLine1: copyText(ui.brands.headingLine1),
+              headingLine2: copyText(ui.brands.headingLine2),
+              seeAll: copyText(ui.brands.seeAll),
+              showStrip: 'TEST SHOW STRIP',
+              autoScroll: copyText(ui.brands.autoScroll),
+              previous: 'Test previous',
+              next: 'Test next',
+              region: 'Test logo strip',
+              imageFallback: fallback,
+            },
+          }}
+        />
+        <div style={{ height: '120vh' }} />
+      </ModalProvider>
     </MotionPreferenceProvider>
   </StrictMode>,
 );

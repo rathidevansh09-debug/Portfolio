@@ -1,8 +1,10 @@
-import { act, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { content } from '../../../src/content/index.ts';
 import { isPending, PENDING_LABEL } from '../../../src/content/pending.ts';
 import type { ProfileContent, Stat } from '../../../src/content/schema.ts';
+import type { ShowreelTarget } from '../../../src/lib/showreel.ts';
+import { ModalProvider, useModal } from '../../../src/modal/ModalProvider.tsx';
 import { MotionPreferenceProvider } from '../../../src/motion/MotionPreference.tsx';
 import { REDUCED_MOTION_QUERY } from '../../../src/motion/preference.ts';
 import { hero as heroTokens } from '../../../src/motion/tokens.ts';
@@ -102,10 +104,43 @@ describe('Hero content and structure (FR-HE1–HE7)', () => {
     expect(badge.querySelector('span')?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('"Play showreel" is visual only until Phase 11 (no dead control)', () => {
+  it('"Play showreel" is visual only when there is nothing to open (no dead control)', () => {
     renderHero();
     expect(screen.getByText('PLAY SHOWREEL')).toBeTruthy();
     expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('"Play showreel" is a button that opens its target in the pop-up (FR-HE8, A-7)', async () => {
+    const target: ShowreelTarget = {
+      kind: 'project',
+      project: { ...content.projects[0], slug: 'test-reel-target' } as never,
+    };
+    function Probe() {
+      const { item, opener } = useModal();
+      return (
+        <output data-testid="opened" data-opener={opener?.tagName ?? ''}>
+          {item?.kind === 'project' ? item.project.slug : ''}
+        </output>
+      );
+    }
+    render(
+      <MotionPreferenceProvider>
+        <ModalProvider>
+          <Probe />
+          <Hero
+            id="home"
+            profile={supplied}
+            labels={labels}
+            workHref="#portfolio"
+            showreel={target}
+          />
+        </ModalProvider>
+      </MotionPreferenceProvider>,
+    );
+    const button = screen.getByRole('button', { name: 'PLAY SHOWREEL MOTION / VIDEO' });
+    fireEvent.click(button);
+    await waitFor(() => expect(screen.getByTestId('opened').textContent).toBe('test-reel-target'));
+    expect(screen.getByTestId('opened').dataset.opener).toBe('BUTTON');
   });
 
   it('edition label uses the draft wording with the supplied start year', () => {

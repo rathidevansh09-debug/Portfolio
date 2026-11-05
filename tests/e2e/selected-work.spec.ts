@@ -4,8 +4,8 @@ import { VERIFICATION_WIDTHS, viewportForWidth } from './helpers/viewports.ts';
 
 // Phase 10 verification. Production build: with nothing published, only the heading row
 // (owner decision 4). Harness (dev server, fictional TEST data, owner decision 3): views, filters,
-// search, show more, empty state, announcement, static cards (owner decision 2), M-05, M-06,
-// responsive composition.
+// search, show more, empty state, announcement, one control per card (Phase 11; the pop-up and
+// M-07a are tested in modal.spec.ts), M-05, M-06, responsive composition.
 
 const HARNESS = 'http://localhost:5180/tests/e2e/harness/work.html';
 const isReduced = (name: string) => name.endsWith('-reduced-motion');
@@ -148,24 +148,29 @@ test.describe('harness', () => {
     await expect(section(page).getByRole('button', { name: 'Show more work' })).toHaveCount(0);
   });
 
-  test('cards are static until Phase 11: no control, no focus stop, no hover change', async ({
+  test('each card is one control: one button named by the title, covering the whole card', async ({
     page,
+    browserName,
   }) => {
-    const grid = section(page).locator('ul');
-    await expect(grid.locator('button, a, [tabindex]')).toHaveCount(0);
-    const card = grid.locator('li').first();
-    await expect(card.locator('svg')).toHaveCount(0); // no hover circle, no caption arrow
-    const media = card.locator('article > div').first();
-    expect(await media.evaluate((el) => getComputedStyle(el).cursor)).not.toBe('pointer');
-    const picture = media.locator('> div').first();
-    const before = await picture.evaluate((el) => getComputedStyle(el).filter);
-    await media.hover();
-    await page.waitForTimeout(800);
-    expect(await picture.evaluate((el) => getComputedStyle(el).filter)).toBe(before);
-    // Keyboard: Tab goes from the search box straight past the grid.
+    const cards = section(page).locator('ul > li');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      await expect(cards.nth(i).locator('button, a, input, [tabindex]')).toHaveCount(1);
+    }
+    const first = cards.first();
+    await expect(first.getByRole('button')).toHaveAccessibleName('Test project 2');
+    // A press anywhere on the card (here: the image centre) reaches the card's button.
+    const media = await first.locator('article > div').first().boundingBox();
+    if (!media) throw new Error('card media not found');
+    const hit = await page.evaluate(
+      ([x, y]) => document.elementFromPoint(x ?? 0, y ?? 0)?.closest('button')?.textContent,
+      [media.x + media.width / 2, media.y + media.height / 2],
+    );
+    expect(hit).toBe('Test project 2');
+    // Keyboard: Tab goes from the search box to the first card (Option+Tab in WebKit).
     await search(page).focus();
-    await page.keyboard.press('Tab');
-    expect(await page.evaluate(() => document.activeElement?.closest('ul') === null)).toBe(true);
+    await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
+    await expect(first.getByRole('button')).toBeFocused();
   });
 
   test('M-05: cards enter when they reach the screen (instant with motion off)', async ({

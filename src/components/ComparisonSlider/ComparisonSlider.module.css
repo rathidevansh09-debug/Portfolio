@@ -10,6 +10,7 @@
 
 .stage[data-ratio='popup'] {
   aspect-ratio: 16 / 9;
+  max-height: 60dvh; /* pop-up images: max 60 % of the screen height (DESIGN §8.10) */
   border: 0;
 }
 

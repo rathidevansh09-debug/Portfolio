@@ -90,8 +90,12 @@ export const card = {
   arrowShift: 3, // M-07a caption arrow, up-right [EXACT]
   /** M-07a hover-icon fade: PRD [TO VERIFY] vs DESIGN 0.3 s [EXACT] — owner resolution (Q-5). */
   hoverIconFade: 0.3,
-  // M-07a hover icon starts "slightly below centre": no distance is given by PRD or DESIGN.
-  // Measured in Phase 16 (TO VERIFY); intentionally no value here until then.
+  /**
+   * M-07a: the hover circle starts "slightly below centre" and rises to centre. No distance is
+   * given by PRD or DESIGN; provisional 10 % of the circle's own height, from the reference
+   * stylesheet (owner decision, Phase 11). [TO VERIFY] in Phase 16.
+   */
+  hoverCircleOffset: 0.1,
 } as const;
 
 export const filterUnderline = { duration: duration.overlay } as const; // M-10 [APPROX] [TO VERIFY]
@@ -128,7 +132,13 @@ export const logoStrip = {
   arrowScroll: 0.7, // fraction of visible width [EXACT]
 } as const;
 
-export const popup = { y: 45, scale: 0.97, duration: duration.overlay } as const; // M-13; duration [APPROX]
+/**
+ * M-13 (DESIGN §9.3): open +45 px & 0.97 → normal, ≈ 0.35 s [APPROX]; close is the reverse.
+ * Phase 16 [TO VERIFY] (owner decision, Phase 11): the reference's close moves the panel only
+ * ≈ 20 px down with no scale, while ours reverses the opening (45 px, 0.97). Compare movement, scale
+ * and duration separately, for open and close. Values unchanged until then.
+ */
+export const popup = { y: 45, scale: 0.97, duration: duration.overlay } as const;
 
 export const magnetic = { x: 0.12, y: 0.2 } as const; // M-14 fraction of pointer offset [EXACT]
 
@@ -160,6 +170,7 @@ export const cssMotionVariables: Readonly<Record<string, string>> = {
   '--card-saturation-rest': String(card.saturationRest),
   '--card-saturation-touch': String(card.saturationTouch),
   '--card-arrow-shift': `${card.arrowShift}px`,
+  '--card-hover-circle-offset': `${card.hoverCircleOffset * 100}%`,
   '--text-link-arrow-shift': `${feedback.textLinkArrow}px`,
   '--logo-hover-scale': String(feedback.logoScale),
   '--toolkit-hover-lift': `${feedback.toolkitLift}px`,
